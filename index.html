@@ -183,6 +183,63 @@
     color:#6e6350;
   }
 
+  .chapnav{
+    display:flex;
+    gap:.45rem;
+    overflow-x:auto;
+    padding:.6rem 1rem;
+    justify-content:flex-start;
+    background:rgba(241,233,214,.96);
+    -webkit-backdrop-filter:blur(6px);
+    backdrop-filter:blur(6px);
+  }
+  .chapnav.top{
+    position:sticky;
+    top:0;
+    z-index:10;
+    border-bottom:1px solid var(--papyrus-dim);
+  }
+  .chapnav.bottom{
+    border-top:1px solid var(--papyrus-dim);
+    margin-top:2rem;
+  }
+  .chapnav a{
+    font-family:'Alegreya Sans', sans-serif;
+    font-size:.85rem;
+    letter-spacing:.04em;
+    text-decoration:none;
+    color:var(--clay);
+    border:1px solid var(--clay);
+    border-radius:2rem;
+    padding:.35rem .95rem;
+    white-space:nowrap;
+    flex:0 0 auto;
+  }
+  .chapnav a:hover{background:var(--clay);color:var(--papyrus)}
+  @media (min-width:640px){.chapnav{justify-content:center}}
+
+  .fabs{
+    position:fixed;
+    right:.8rem;
+    bottom:1.1rem;
+    display:flex;
+    flex-direction:column;
+    gap:.5rem;
+    z-index:20;
+  }
+  .fab{
+    width:2.7rem;height:2.7rem;
+    border-radius:50%;
+    border:1.5px solid var(--clay);
+    background:rgba(241,233,214,.93);
+    color:var(--clay);
+    font-size:1.15rem;
+    line-height:1;
+    cursor:pointer;
+    box-shadow:0 2px 8px rgba(40,34,26,.15);
+  }
+  .fab:hover{background:var(--clay);color:var(--papyrus)}
+
   footer{
     background:var(--sea-deep);
     color:#9aa5ae;
@@ -193,8 +250,13 @@
   footer .fgreek{color:var(--gold);font-style:italic;margin-bottom:.4rem}
 
   @media (max-width:520px){
-    .verse{grid-template-columns:1fr 2rem;column-gap:.4rem}
-    .poem{font-size:1.08rem}
+    main{padding:2.2rem .9rem 3rem}
+    .poem{font-size:clamp(12px, 3.15vw, 1.02rem);line-height:1.7}
+    .verse{display:block;position:relative;padding-right:1.5rem}
+    .verse .ua{padding-left:1.1em;text-indent:-1.1em}
+    .verse .num{position:absolute;right:0;top:.2em}
+    .verse .gr{padding-left:1em;font-size:.92em}
+    .drop::first-letter{font-size:2.6em}
   }
 </style>
 </head>
@@ -207,6 +269,12 @@
   <p class="authors">Переклад: <strong>Hardex</strong> у співпраці з Claude (Anthropic)</p>
 </header>
 
+<nav class="chapnav top" aria-label="Розділи">
+  <a href="#zachyn">Зачин</a>
+  <a href="#rada">Рада богів</a>
+  <a href="#afina">Афіна заступається</a>
+</nav>
+
 <main id="content">
   <p class="book-label">Пісня перша</p>
 
@@ -214,7 +282,7 @@
     <button class="toggle" id="grToggle" aria-pressed="false">Показати оригінал</button>
   </div>
 
-  <section>
+  <section id="zachyn">
     <h2>Зачин</h2>
     <p class="lines-range">рядки 1–10</p>
     <div class="poem">
@@ -271,7 +339,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="rada">
     <h2>Рада богів</h2>
     <p class="lines-range">рядки 11–43</p>
     <div class="poem">
@@ -444,7 +512,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="afina">
     <h2>Афіна заступається</h2>
     <p class="lines-range">рядки 44–95</p>
     <div class="poem">
@@ -719,6 +787,17 @@
   <p class="coming">Далі — Афіна злітає з Олімпу і в подобі Ментеса прибуває на Ітаку (Пісня I, рядки 96–155). Переклад триває.</p>
 </main>
 
+<nav class="chapnav bottom" aria-label="Розділи (внизу)">
+  <a href="#zachyn">Зачин</a>
+  <a href="#rada">Рада богів</a>
+  <a href="#afina">Афіна заступається</a>
+</nav>
+
+<div class="fabs">
+  <button class="fab" id="fabUp" aria-label="Догори">↑</button>
+  <button class="fab" id="fabDown" aria-label="Додолу">↓</button>
+</div>
+
 <div style="padding:2.5rem 0;background:var(--papyrus)"><div class="meander" role="presentation"></div></div>
 
 <footer>
@@ -730,11 +809,43 @@
 <script>
   const btn = document.getElementById('grToggle');
   const content = document.getElementById('content');
-  btn.addEventListener('click', () => {
-    const on = content.classList.toggle('show-greek');
+  const POS_KEY = 'odysseia-pos';
+  const GR_KEY = 'odysseia-greek';
+
+  function setGreek(on){
+    content.classList.toggle('show-greek', on);
     btn.setAttribute('aria-pressed', on ? 'true' : 'false');
     btn.textContent = on ? 'Сховати оригінал' : 'Показати оригінал';
+  }
+  btn.addEventListener('click', () => {
+    const on = !content.classList.contains('show-greek');
+    setGreek(on);
+    try { localStorage.setItem(GR_KEY, on ? '1' : '0'); } catch(e){}
   });
+
+  // Плаваючі стрілки
+  document.getElementById('fabUp').addEventListener('click', () =>
+    window.scrollTo({top:0, behavior:'smooth'}));
+  document.getElementById('fabDown').addEventListener('click', () =>
+    window.scrollTo({top:document.documentElement.scrollHeight, behavior:'smooth'}));
+
+  // Відновлення місця читання та стану оригіналу
+  window.addEventListener('load', () => {
+    try {
+      if (localStorage.getItem(GR_KEY) === '1') setGreek(true);
+      const pos = localStorage.getItem(POS_KEY);
+      if (pos) window.scrollTo(0, parseInt(pos, 10) || 0);
+    } catch(e){}
+  });
+
+  // Запам'ятовування позиції під час прокрутки
+  let saveTimer;
+  window.addEventListener('scroll', () => {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      try { localStorage.setItem(POS_KEY, String(window.scrollY)); } catch(e){}
+    }, 200);
+  }, {passive:true});
 </script>
 
 </body>
