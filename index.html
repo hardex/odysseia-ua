@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Одіссея — новий український переклад</title>
+<meta name="description" content="Новий український переклад «Одіссеї» Гомера з давньогрецького оригіналу. Вільний ритмізований вірш із гекзаметричними інтонаціями.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sea:#1a2733;          /* винно-темне море */
+    --sea-deep:#131d27;
+    --ink:#28221a;          /* чорнило на папірусі */
+    --papyrus:#f1e9d6;
+    --papyrus-dim:#e7dcc3;
+    --gold:#c69a3f;         /* золото кераміки */
+    --clay:#9c5b3f;         /* теракота */
+    --mist:#ece4d2;         /* світлий текст на морі */
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    font-family:'Alegreya', Georgia, serif;
+    background:var(--papyrus);
+    color:var(--ink);
+    line-height:1.6;
+  }
+  a{color:var(--clay)}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+  /* ── Герой: винно-темне море ─────────────────────── */
+  .hero{
+    background:linear-gradient(180deg, var(--sea) 0%, var(--sea-deep) 100%);
+    color:var(--mist);
+    text-align:center;
+    padding:5.5rem 1.5rem 4.5rem;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .greek-epigraph{
+    font-style:italic;
+    color:var(--gold);
+    letter-spacing:.06em;
+    font-size:1.05rem;
+    opacity:.9;
+  }
+  .hero h1{
+    font-family:'Forum', serif;
+    font-weight:400;
+    font-size:clamp(3.2rem, 10vw, 6.5rem);
+    letter-spacing:.12em;
+    margin:.4rem 0 .2rem;
+    color:var(--mist);
+  }
+  .hero .subtitle{
+    font-family:'Alegreya Sans', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.28em;
+    font-size:.85rem;
+    color:var(--gold);
+    margin-top:.6rem;
+  }
+  .hero .note{
+    max-width:34rem;
+    margin:1.8rem auto 0;
+    font-size:1.05rem;
+    color:#cfc5ae;
+    font-style:italic;
+  }
+  .hero .authors{
+    font-family:'Alegreya Sans', sans-serif;
+    font-size:.95rem;
+    letter-spacing:.06em;
+    color:var(--gold);
+    margin-top:1.4rem;
+  }
+  .hero .authors strong{font-weight:500}
+  /* хвиля внизу героя */
+  .hero::after{
+    content:"";
+    position:absolute;left:0;right:0;bottom:-1px;height:22px;
+    background:
+      radial-gradient(circle at 12px -6px, transparent 14px, var(--papyrus) 15px);
+    background-size:24px 22px;
+    background-repeat:repeat-x;
+  }
+
+  /* ── Меандр-розділювач ───────────────────────────── */
+  .meander{
+    height:14px;
+    max-width:16rem;
+    margin:0 auto;
+    background:
+      repeating-linear-gradient(90deg,
+        var(--gold) 0 2px, transparent 2px 8px,
+        var(--gold) 8px 10px, transparent 10px 16px);
+    border-top:2px solid var(--gold);
+    border-bottom:2px solid var(--gold);
+    opacity:.75;
+  }
+
+  /* ── Основна колонка ─────────────────────────────── */
+  main{max-width:44rem;margin:0 auto;padding:3.5rem 1.5rem 4rem}
+  .book-label{
+    font-family:'Alegreya Sans', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.24em;
+    font-size:.8rem;
+    color:var(--clay);
+    text-align:center;
+  }
+  h2{
+    font-family:'Forum', serif;
+    font-weight:400;
+    font-size:2rem;
+    text-align:center;
+    letter-spacing:.05em;
+    margin:.4rem 0 .5rem;
+  }
+  .lines-range{
+    text-align:center;
+    font-style:italic;
+    color:#6e6350;
+    margin-bottom:2.2rem;
+  }
+
+  /* перемикач оригіналу */
+  .toggle-wrap{text-align:center;margin-bottom:2.4rem}
+  .toggle{
+    font-family:'Alegreya Sans', sans-serif;
+    font-size:.9rem;
+    letter-spacing:.08em;
+    background:transparent;
+    color:var(--clay);
+    border:1.5px solid var(--clay);
+    border-radius:2rem;
+    padding:.55rem 1.4rem;
+    cursor:pointer;
+    transition:background .2s, color .2s;
+  }
+  .toggle:hover{background:var(--clay);color:var(--papyrus)}
+  .toggle[aria-pressed="true"]{background:var(--clay);color:var(--papyrus)}
+
+  /* ── Текст поеми ─────────────────────────────────── */
+  .poem{
+    font-size:1.18rem;
+    line-height:1.85;
+  }
+  .verse{
+    display:grid;
+    grid-template-columns:1fr 2.6rem;
+    column-gap:.8rem;
+    align-items:baseline;
+  }
+  .verse .ua{grid-column:1}
+  .verse .num{
+    grid-column:2;
+    font-family:'Alegreya Sans', sans-serif;
+    font-size:.75rem;
+    color:#a3947a;
+    text-align:left;
+    user-select:none;
+  }
+  .verse .gr{
+    grid-column:1 / -1;
+    font-style:italic;
+    color:#7d6f57;
+    font-size:1rem;
+    line-height:1.5;
+    padding:.1rem 0 .55rem 1.2rem;
+    border-left:2px solid var(--papyrus-dim);
+    display:none;
+  }
+  .poem.show-greek .gr{display:block}
+  .drop::first-letter{
+    font-family:'Forum', serif;
+    font-size:3.4em;
+    float:left;
+    line-height:.85;
+    padding:.04em .12em 0 0;
+    color:var(--clay);
+  }
+
+  /* ── Примітка перекладача ────────────────────────── */
+  .translator-note{
+    margin-top:3.5rem;
+    padding:1.8rem 2rem;
+    background:var(--papyrus-dim);
+    border-left:4px solid var(--gold);
+  }
+  .translator-note h3{
+    font-family:'Forum', serif;
+    font-weight:400;
+    font-size:1.35rem;
+    margin-bottom:.7rem;
+  }
+  .translator-note p{margin-bottom:.8rem;font-size:1.02rem}
+  .translator-note p:last-child{margin-bottom:0}
+
+  /* ── Далі буде ───────────────────────────────────── */
+  .coming{
+    margin-top:3rem;
+    text-align:center;
+    font-style:italic;
+    color:#6e6350;
+  }
+
+  footer{
+    background:var(--sea-deep);
+    color:#9aa5ae;
+    text-align:center;
+    padding:2.2rem 1.5rem;
+    font-size:.9rem;
+  }
+  footer .fgreek{color:var(--gold);font-style:italic;margin-bottom:.4rem}
+
+  @media (max-width:520px){
+    .verse{grid-template-columns:1fr 2rem;column-gap:.4rem}
+    .poem{font-size:1.08rem}
+    .translator-note{padding:1.4rem 1.2rem}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <p class="greek-epigraph">ἄνδρα μοι ἔννεπε, μοῦσα, πολύτροπον…</p>
+  <h1>ОДІССЕЯ</h1>
+  <p class="subtitle">Гомер · новий український переклад</p>
+  <p class="note">Переклад із давньогрецького оригіналу вільним ритмізованим віршем із гекзаметричними інтонаціями.</p>
+  <p class="authors">Переклад: <strong>Hardex</strong> у співпраці з Claude (Anthropic)</p>
+</header>
+
+<main>
+  <p class="book-label">Пісня перша</p>
+  <h2>Зачин</h2>
+  <p class="lines-range">рядки 1–10</p>
+
+  <div class="toggle-wrap">
+    <button class="toggle" id="grToggle" aria-pressed="false">Показати оригінал</button>
+  </div>
+
+  <div class="poem" id="poem">
+
+    <div class="verse">
+      <p class="ua drop">Музо, повідай мені про мужа хитромудрого,</p>
+      <p class="num"></p>
+      <p class="gr">ἄνδρα μοι ἔννεπε, μοῦσα, πολύτροπον, ὃς μάλα πολλὰ</p>
+    </div>
+    <div class="verse">
+      <p class="ua">що довго-довго блукав, відколи впала Троя священна.</p>
+      <p class="num"></p>
+      <p class="gr">πλάγχθη, ἐπεὶ Τροίης ἱερὸν πτολίεθρον ἔπερσεν·</p>
+    </div>
+    <div class="verse">
+      <p class="ua">Багато міст він побачив, багато звичаїв людських пізнав,</p>
+      <p class="num"></p>
+      <p class="gr">πολλῶν δ᾽ ἀνθρώπων ἴδεν ἄστεα καὶ νόον ἔγνω,</p>
+    </div>
+    <div class="verse">
+      <p class="ua">багато горя стерпіло серце його на морі,</p>
+      <p class="num"></p>
+      <p class="gr">πολλὰ δ᾽ ὅ γ᾽ ἐν πόντῳ πάθεν ἄλγεα ὃν κατὰ θυμόν,</p>
+    </div>
+    <div class="verse">
+      <p class="ua">коли за душу свою боровся й за поворот товаришів.</p>
+      <p class="num">5</p>
+      <p class="gr">ἀρνύμενος ἥν τε ψυχὴν καὶ νόστον ἑταίρων.</p>
+    </div>
+    <div class="verse">
+      <p class="ua">Та не врятував товаришів, хоч як того жадав:</p>
+      <p class="num"></p>
+      <p class="gr">ἀλλ᾽ οὐδ᾽ ὣς ἑτάρους ἐρρύσατο, ἱέμενός περ·</p>
+    </div>
+    <div class="verse">
+      <p class="ua">вони загинули через безумство власне —</p>
+      <p class="num"></p>
+      <p class="gr">αὐτῶν γὰρ σφετέρῃσιν ἀτασθαλίῃσιν ὄλοντο,</p>
+    </div>
+    <div class="verse">
+      <p class="ua">нерозумні! — з'їли биків Геліоса-сонця,</p>
+      <p class="num"></p>
+      <p class="gr">νήπιοι, οἳ κατὰ βοῦς Ὑπερίονος Ἠελίοιο</p>
+    </div>
+    <div class="verse">
+      <p class="ua">і бог у них відібрав жаданий день повернення.</p>
+      <p class="num"></p>
+      <p class="gr">ἤσθιον· αὐτὰρ ὁ τοῖσιν ἀφείλετο νόστιμον ἦμαρ.</p>
+    </div>
+    <div class="verse">
+      <p class="ua">Звідки завгодно почни, богине, Зевсова дочко, — розкажи і нам.</p>
+      <p class="num">10</p>
+      <p class="gr">τῶν ἁμόθεν γε, θεά, θύγατερ Διός, εἰπὲ καὶ ἡμῖν.</p>
+    </div>
+
+  </div>
+
+  <section class="translator-note">
+    <h3>Про стиль перекладу</h3>
+    <p>Основа перекладу — вільний ритмізований вірш: він дозволяє бути точним до змісту й водночас зберігати епічну плинність оповіді. У ключових, урочистих місцях — як-от зачин чи звернення до Музи — рядок набирає впізнаваної дактилічної «ходи» гекзаметра.</p>
+    <p>Збережено гомерівські прийоми: трикратний повтор «багато… багато… багато», емоційний вигук <em>νήπιοι</em> («нерозумні!») на зламі рядка, кільцеву композицію зачину, що відкривається й замикається зверненням до богині.</p>
+    <p>Знаменитий епітет Одіссея <em>πολύτροπος</em> — буквально «многоповоротний» — передано як «хитромудрий»: той, хто й багато мандрував, і спритний розумом.</p>
+  </section>
+
+  <p class="coming">Далі — рада богів на Олімпі (Пісня I, рядки 11–43). Переклад триває.</p>
+</main>
+
+<div style="padding:2.5rem 0;background:var(--papyrus)"><div class="meander" role="presentation"></div></div>
+
+<footer>
+  <p class="fgreek">οἶνοψ πόντος — винно-темне море</p>
+  <p>Переклад з давньогрецької: Hardex &amp; Claude (Anthropic), 2026.</p>
+  <p>Оригінальний текст Гомера — у суспільному надбанні.</p>
+</footer>
+
+<script>
+  const btn = document.getElementById('grToggle');
+  const poem = document.getElementById('poem');
+  btn.addEventListener('click', () => {
+    const on = poem.classList.toggle('show-greek');
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.textContent = on ? 'Сховати оригінал' : 'Показати оригінал';
+  });
+</script>
+
+</body>
+</html>
