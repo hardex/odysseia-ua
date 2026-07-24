@@ -1,0 +1,2762 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Одіссея — новий український переклад</title>
+<meta name="description" content="Новий український переклад «Одіссеї» Гомера з давньогрецького оригіналу.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sea:#1a2733;
+    --sea-deep:#131d27;
+    --ink:#28221a;
+    --papyrus:#f1e9d6;
+    --papyrus-dim:#e7dcc3;
+    --gold:#c69a3f;
+    --clay:#9c5b3f;
+    --mist:#ece4d2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    font-family:'Alegreya', Georgia, serif;
+    background:var(--papyrus);
+    color:var(--ink);
+    line-height:1.6;
+  }
+  a{color:var(--clay)}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+  .hero{
+    background:linear-gradient(180deg, var(--sea) 0%, var(--sea-deep) 100%);
+    color:var(--mist);
+    text-align:center;
+    padding:5.5rem 1.5rem 4.5rem;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .greek-epigraph{
+    font-style:italic;
+    color:var(--gold);
+    letter-spacing:.06em;
+    font-size:1.05rem;
+    opacity:.9;
+  }
+  .hero h1{
+    font-family:'Forum', serif;
+    font-weight:400;
+    font-size:clamp(3.2rem, 10vw, 6.5rem);
+    letter-spacing:.12em;
+    margin:.4rem 0 .2rem;
+    color:var(--mist);
+  }
+  .hero .subtitle{
+    font-family:'Alegreya Sans', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.28em;
+    font-size:.85rem;
+    color:var(--gold);
+    margin-top:.6rem;
+  }
+  .hero .authors{
+    font-family:'Alegreya Sans', sans-serif;
+    font-size:.95rem;
+    letter-spacing:.06em;
+    color:var(--gold);
+    margin-top:1.6rem;
+  }
+  .hero .authors strong{font-weight:500}
+  .hero::after{
+    content:"";
+    position:absolute;left:0;right:0;bottom:-1px;height:22px;
+    background:
+      radial-gradient(circle at 12px -6px, transparent 14px, var(--papyrus) 15px);
+    background-size:24px 22px;
+    background-repeat:repeat-x;
+  }
+
+  .meander{
+    height:14px;
+    max-width:16rem;
+    margin:0 auto;
+    background:
+      repeating-linear-gradient(90deg,
+        var(--gold) 0 2px, transparent 2px 8px,
+        var(--gold) 8px 10px, transparent 10px 16px);
+    border-top:2px solid var(--gold);
+    border-bottom:2px solid var(--gold);
+    opacity:.75;
+  }
+
+  main{max-width:44rem;margin:0 auto;padding:3.5rem 1.5rem 4rem}
+  .book-label{
+    font-family:'Alegreya Sans', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.24em;
+    font-size:.8rem;
+    color:var(--clay);
+    text-align:center;
+  }
+  h2{
+    font-family:'Forum', serif;
+    font-weight:400;
+    font-size:2rem;
+    text-align:center;
+    letter-spacing:.05em;
+    margin:.4rem 0 .3rem;
+  }
+  section + section h2{margin-top:3.2rem}
+  .lines-range{
+    text-align:center;
+    font-style:italic;
+    color:#6e6350;
+    margin-bottom:1.8rem;
+  }
+
+  .toggle-wrap{text-align:center;margin:1.6rem 0 2.4rem}
+  .toggle{
+    font-family:'Alegreya Sans', sans-serif;
+    font-size:.9rem;
+    letter-spacing:.08em;
+    background:transparent;
+    color:var(--clay);
+    border:1.5px solid var(--clay);
+    border-radius:2rem;
+    padding:.55rem 1.4rem;
+    cursor:pointer;
+    transition:background .2s, color .2s;
+  }
+  .toggle:hover{background:var(--clay);color:var(--papyrus)}
+  .toggle[aria-pressed="true"]{background:var(--clay);color:var(--papyrus)}
+
+  .poem{
+    font-size:1.18rem;
+    line-height:1.85;
+  }
+  .verse{
+    display:grid;
+    grid-template-columns:1fr 2.6rem;
+    column-gap:.8rem;
+    align-items:baseline;
+  }
+  .verse .ua{grid-column:1}
+  .verse .num{
+    grid-column:2;
+    font-family:'Alegreya Sans', sans-serif;
+    font-size:.75rem;
+    color:#a3947a;
+    text-align:left;
+    user-select:none;
+  }
+  .verse .gr{
+    grid-column:1 / -1;
+    font-style:italic;
+    color:#7d6f57;
+    font-size:1rem;
+    line-height:1.5;
+    padding:.1rem 0 .55rem 1.2rem;
+    border-left:2px solid var(--papyrus-dim);
+    display:none;
+  }
+  .show-greek .gr{display:block}
+  .stanza-break{height:1.1rem}
+  .drop::first-letter{
+    font-family:'Forum', serif;
+    font-size:3.4em;
+    float:left;
+    line-height:.85;
+    padding:.04em .12em 0 0;
+    color:var(--clay);
+  }
+
+  .coming{
+    margin-top:3rem;
+    text-align:center;
+    font-style:italic;
+    color:#6e6350;
+  }
+
+  .pagenav{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:.6rem;
+    padding:.55rem .9rem;
+    background:rgba(241,233,214,.96);
+    -webkit-backdrop-filter:blur(6px);
+    backdrop-filter:blur(6px);
+  }
+  .pagenav.top{
+    position:sticky;
+    top:0;
+    z-index:10;
+    border-bottom:1px solid var(--papyrus-dim);
+  }
+  .pagenav.bottom{
+    border-top:1px solid var(--papyrus-dim);
+    margin-top:2rem;
+  }
+  .navarrow{
+    width:2.4rem;height:2.4rem;
+    border-radius:50%;
+    border:1.5px solid var(--clay);
+    background:transparent;
+    color:var(--clay);
+    font-size:1.05rem;
+    line-height:1;
+    cursor:pointer;
+    flex:0 0 auto;
+  }
+  .navarrow:hover{background:var(--clay);color:var(--papyrus)}
+  .navarrow:disabled{opacity:.35;cursor:default}
+  .navarrow:disabled:hover{background:transparent;color:var(--clay)}
+  .chapselect{
+    font-family:'Alegreya Sans', sans-serif;
+    font-size:.92rem;
+    color:var(--ink);
+    background:var(--papyrus);
+    border:1.5px solid var(--clay);
+    border-radius:2rem;
+    padding:.45rem 1rem;
+    max-width:15rem;
+    flex:1 1 auto;
+    -webkit-appearance:none;
+    appearance:none;
+    text-align:center;
+    cursor:pointer;
+  }
+  main section{scroll-margin-top:4.4rem}
+  .book-label.second{margin-top:3.8rem}
+
+  .fabs{
+    position:fixed;
+    right:.8rem;
+    bottom:1.1rem;
+    display:flex;
+    flex-direction:column;
+    gap:.5rem;
+    z-index:20;
+  }
+  .fab{
+    width:2.7rem;height:2.7rem;
+    border-radius:50%;
+    border:1.5px solid var(--clay);
+    background:rgba(241,233,214,.93);
+    color:var(--clay);
+    font-size:1.15rem;
+    line-height:1;
+    cursor:pointer;
+    box-shadow:0 2px 8px rgba(40,34,26,.15);
+  }
+  .fab:hover{background:var(--clay);color:var(--papyrus)}
+
+  footer{
+    background:var(--sea-deep);
+    color:#9aa5ae;
+    text-align:center;
+    padding:2.2rem 1.5rem;
+    font-size:.9rem;
+  }
+  footer .fgreek{color:var(--gold);font-style:italic;margin-bottom:.4rem}
+
+  @media (max-width:520px){
+    main{padding:2.2rem .9rem 3rem}
+    .poem{font-size:1.04rem;line-height:1.75}
+    .verse{display:block;position:relative;padding-right:1.4rem}
+    .verse .ua{padding-left:1.15em;text-indent:-1.15em}
+    .verse .num{position:absolute;right:0;top:.25em}
+    .verse .gr{padding-left:1em;font-size:.9em}
+    .drop::first-letter{font-size:2.6em}
+  }
+
+  .hero-book{padding:3.2rem 1.5rem 3rem}
+  .hero-book h1{font-size:clamp(2.4rem, 8vw, 4rem);letter-spacing:.08em}
+  .crumbs{margin-bottom:.8rem}
+  .crumbs a{color:var(--gold);text-decoration:none;font-family:'Alegreya Sans',sans-serif;font-size:.9rem;letter-spacing:.06em}
+  .booknav{display:flex;justify-content:space-between;gap:1rem;margin-top:3rem;font-family:'Alegreya Sans',sans-serif}
+  .booknav a{text-decoration:none;border:1.5px solid var(--clay);border-radius:2rem;padding:.5rem 1.1rem;color:var(--clay)}
+  .booknav a:hover{background:var(--clay);color:var(--papyrus)}
+  .toc{list-style:none;max-width:44rem;margin:0 auto;padding:2.5rem 1.5rem 3rem}
+  .toc li{margin-bottom:.7rem}
+  .toc a, .toc .soon{
+    display:flex;align-items:baseline;gap:.9rem;
+    padding:1rem 1.2rem;border:1.5px solid var(--papyrus-dim);border-radius:.6rem;
+    text-decoration:none;color:var(--ink);
+  }
+  .toc a:hover{border-color:var(--clay);background:var(--papyrus-dim)}
+  .toc .n{font-family:'Forum',serif;font-size:1.5rem;color:var(--clay);min-width:2.2rem;text-align:right}
+  .toc .t{font-weight:500}
+  .toc .d{color:#6e6350;font-size:.95rem}
+  .toc .soon{opacity:.45}
+  .toc .soon .n{color:#a3947a}
+  .continue-wrap{text-align:center;margin:1.8rem 0 0}
+  .continue-wrap a{
+    display:none;font-family:'Alegreya Sans',sans-serif;
+    border:1.5px solid var(--gold);color:var(--gold);border-radius:2rem;
+    padding:.55rem 1.4rem;text-decoration:none;letter-spacing:.06em;
+  }
+  .continue-wrap a:hover{background:var(--gold);color:var(--sea-deep)}
+</style>
+</head>
+<body>
+
+<header class="hero hero-book">
+  <p class="crumbs"><a href="index.html">‹ Зміст</a></p>
+  <p class="greek-epigraph">ΟΔΥΣΣΕΙΑΣ β</p>
+  <h1>Пісня друга</h1>
+  <p class="subtitle">Рада ітакійців і відплиття</p>
+</header>
+
+<nav class="pagenav top" aria-label="Розділи">
+  <button class="navarrow nav-prev" aria-label="Попередній розділ">←</button>
+  <select class="chapselect" aria-label="Перейти до розділу">
+    <option value="rada2">Рада ітакійців</option>
+    <option value="iehyptiy">Слово Єгиптія</option>
+    <option value="promova">Промова Телемаха</option>
+    <option value="polotno">Пенелопине полотно</option>
+    <option value="orly">Зевсові орли</option>
+    <option value="evrimah2">Зухвальство Еврімаха</option>
+    <option value="prohannia">Прохання Телемаха</option>
+    <option value="mentor">Докір Ментора</option>
+    <option value="leokrit">Глум Леокріта</option>
+    <option value="molytva">Молитва біля моря</option>
+    <option value="kepkuvannia">Антіной кепкує</option>
+    <option value="komora">Комора Евріклеї</option>
+    <option value="kliatva">Клятва няньки</option>
+    <option value="son">Сон від Афіни</option>
+    <option value="vidplyttia">Нічне відплиття</option>
+  </select>
+  <button class="navarrow nav-next" aria-label="Наступний розділ">→</button>
+</nav>
+
+<main id="content">
+  <div class="toggle-wrap">
+    <button class="toggle" id="grToggle" aria-pressed="false">Показати оригінал</button>
+  </div>
+
+  <section id="rada2">
+    <h2>Рада ітакійців</h2>
+    <p class="lines-range">рядки 1–14</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Щойно з'явилась рання Зоря рожевоперста,</p>
+        <p class="num"></p>
+        <p class="gr">ἦμος δ᾽ ἠριγένεια φάνη ῥοδοδάκτυλος Ἠώς,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">підвівся з ложа любий син Одіссеїв,</p>
+        <p class="num"></p>
+        <p class="gr">ὤρνυτ᾽ ἄρ᾽ ἐξ εὐνῆφιν Ὀδυσσῆος φίλος υἱὸς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">одягся, через плече гострий меч перекинув,</p>
+        <p class="num"></p>
+        <p class="gr">εἵματα ἑσσάμενος, περὶ δὲ ξίφος ὀξὺ θέτ᾽ ὤμῳ,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">до ніг лискучих підв'язав прекрасні сандалії</p>
+        <p class="num"></p>
+        <p class="gr">ποσσὶ δ᾽ ὑπὸ λιπαροῖσιν ἐδήσατο καλὰ πέδιλα,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і вийшов зі спальні, на вигляд до бога подібний.</p>
+        <p class="num">5</p>
+        <p class="gr">βῆ δ᾽ ἴμεν ἐκ θαλάμοιο θεῷ ἐναλίγκιος ἄντην.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Одразу ж окличникам дзвінкоголосим звелів він</p>
+        <p class="num"></p>
+        <p class="gr">αἶψα δὲ κηρύκεσσι λιγυφθόγγοισι κέλευσε</p>
+      </div>
+      <div class="verse">
+        <p class="ua">скликати на раду довговолосих ахейців.</p>
+        <p class="num"></p>
+        <p class="gr">κηρύσσειν ἀγορήνδε κάρη κομόωντας Ἀχαιούς.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Ті клич подали — і люди зійшлися швидко.</p>
+        <p class="num"></p>
+        <p class="gr">οἱ μὲν ἐκήρυσσον, τοὶ δ᾽ ἠγείροντο μάλ᾽ ὦκα.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Коли ж зійшлися вони і зібрались докупи,</p>
+        <p class="num"></p>
+        <p class="gr">αὐτὰρ ἐπεί ῥ᾽ ἤγερθεν ὁμηγερέες τ᾽ ἐγένοντο,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">рушив на площу і він, тримаючи мідний спис, —</p>
+        <p class="num">10</p>
+        <p class="gr">βῆ ῥ᾽ ἴμεν εἰς ἀγορήν, παλάμῃ δ᾽ ἔχε χάλκεον ἔγχος,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">не сам: два пси прудкі бігли за ним слідом.</p>
+        <p class="num"></p>
+        <p class="gr">οὐκ οἶος, ἅμα τῷ γε δύω κύνες ἀργοὶ ἕποντο.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Дивну знадливість вилила на нього Афіна —</p>
+        <p class="num"></p>
+        <p class="gr">θεσπεσίην δ᾽ ἄρα τῷ γε χάριν κατέχευεν Ἀθήνη.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">люди всі задивлялись на нього, як він надходив.</p>
+        <p class="num"></p>
+        <p class="gr">τὸν δ᾽ ἄρα πάντες λαοὶ ἐπερχόμενον θηεῦντο·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Сів він на батьківське місце, і старійшини розступились.</p>
+        <p class="num"></p>
+        <p class="gr">ἕζετο δ᾽ ἐν πατρὸς θώκῳ, εἶξαν δὲ γέροντες.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="iehyptiy">
+    <h2>Слово Єгиптія</h2>
+    <p class="lines-range">рядки 15–34</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Першим тоді промовляти почав герой Єгиптій,</p>
+        <p class="num">15</p>
+        <p class="gr">τοῖσι δ᾽ ἔπειθ᾽ ἥρως Αἰγύπτιος ἦρχ᾽ ἀγορεύειν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">згорблений від старості, що знав безліч усього.</p>
+        <p class="num"></p>
+        <p class="gr">ὃς δὴ γήραϊ κυφὸς ἔην καὶ μυρία ᾔδη.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Син-бо і його любий із богорівним Одіссеєм</p>
+        <p class="num"></p>
+        <p class="gr">καὶ γὰρ τοῦ φίλος υἱὸς ἅμ᾽ ἀντιθέῳ Ὀδυσῆι</p>
+      </div>
+      <div class="verse">
+        <p class="ua">під Іліон конеславний поплив на суднах крутобоких —</p>
+        <p class="num"></p>
+        <p class="gr">Ἴλιον εἰς ἐύπωλον ἔβη κοίλῃς ἐνὶ νηυσίν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">списник Антіф. Убив його дикий кіклоп</p>
+        <p class="num"></p>
+        <p class="gr">Ἄντιφος αἰχμητής· τὸν δ᾽ ἄγριος ἔκτανε Κύκλωψ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">у глибокій печері — з нього вечерю останню зладив.</p>
+        <p class="num">20</p>
+        <p class="gr">ἐν σπῆι γλαφυρῷ, πύματον δ᾽ ὡπλίσσατο δόρπον.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Ще троє в нього було: один із женихами знався —</p>
+        <p class="num"></p>
+        <p class="gr">τρεῖς δέ οἱ ἄλλοι ἔσαν, καὶ ὁ μὲν μνηστῆρσιν ὁμίλει,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Еврином, а двоє батьківське поле порали.</p>
+        <p class="num"></p>
+        <p class="gr">Εὐρύνομος, δύο δ᾽ αἰὲν ἔχον πατρώια ἔργα.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Та й так не забував він того — тужив і сумував.</p>
+        <p class="num"></p>
+        <p class="gr">ἀλλ᾽ οὐδ᾽ ὣς τοῦ λήθετ᾽ ὀδυρόμενος καὶ ἀχεύων.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">За ним ридаючи, він до ради промовив:</p>
+        <p class="num"></p>
+        <p class="gr">τοῦ ὅ γε δάκρυ χέων ἀγορήσατο καὶ μετέειπε·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Слухайте нині мене, ітакійці, що я скажу!</p>
+        <p class="num">25</p>
+        <p class="gr">«κέκλυτε δὴ νῦν μευ, Ἰθακήσιοι, ὅττι κεν εἴπω·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Ні разу не було в нас ані ради, ані зібрання,</p>
+        <p class="num"></p>
+        <p class="gr">οὔτε ποθ᾽ ἡμετέρη ἀγορὴ γένετ᾽ οὔτε θόωκος</p>
+      </div>
+      <div class="verse">
+        <p class="ua">відколи божистий Одіссей відплив на суднах крутобоких.</p>
+        <p class="num"></p>
+        <p class="gr">ἐξ οὗ Ὀδυσσεὺς δῖος ἔβη κοίλῃς ἐνὶ νηυσί.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Хто ж нині нас скликав? Кому така потреба впала —</p>
+        <p class="num"></p>
+        <p class="gr">νῦν δὲ τίς ὧδ᾽ ἤγειρε; τίνα χρειὼ τόσον ἵκει</p>
+      </div>
+      <div class="verse">
+        <p class="ua">чи з молодих мужів, чи з тих, що старші?</p>
+        <p class="num"></p>
+        <p class="gr">ἠὲ νέων ἀνδρῶν ἢ οἳ προγενέστεροί εἰσιν;</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Може, звістку почув він, що військо вертається,</p>
+        <p class="num">30</p>
+        <p class="gr">ἠέ τιν᾽ ἀγγελίην στρατοῦ ἔκλυεν ἐρχομένοιο,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і хоче нам ясно сказати, що перший дізнався?</p>
+        <p class="num"></p>
+        <p class="gr">ἥν χ᾽ ἡμῖν σάφα εἴποι, ὅτε πρότερός γε πύθοιτο;</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Чи іншу громадську справу оголосить і скаже?</p>
+        <p class="num"></p>
+        <p class="gr">ἦέ τι δήμιον ἄλλο πιφαύσκεται ἠδ᾽ ἀγορεύει;</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Гідним він мені здається, благословенним. Хай же</p>
+        <p class="num"></p>
+        <p class="gr">ἐσθλός μοι δοκεῖ εἶναι, ὀνήμενος. εἴθε οἱ αὐτῷ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Зевс йому добром завершить те, що в думках він плекає!»</p>
+        <p class="num"></p>
+        <p class="gr">Ζεὺς ἀγαθὸν τελέσειεν, ὅτι φρεσὶν ᾗσι μενοινᾷ.»</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="promova">
+    <h2>Промова Телемаха</h2>
+    <p class="lines-range">рядки 35–79</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Так він сказав. Зрадів цьому слову любий син Одіссеїв</p>
+        <p class="num">35</p>
+        <p class="gr">ὣς φάτο, χαῖρε δὲ φήμῃ Ὀδυσσῆος φίλος υἱός,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і довго не всидів — закортіло промовити.</p>
+        <p class="num"></p>
+        <p class="gr">οὐδ᾽ ἄρ᾽ ἔτι δὴν ἧστο, μενοίνησεν δ᾽ ἀγορεύειν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Став він посеред ради; скіпетр вклав йому в руку</p>
+        <p class="num"></p>
+        <p class="gr">στῆ δὲ μέσῃ ἀγορῇ· σκῆπτρον δέ οἱ ἔμβαλε χειρὶ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">окличник Пейсенор, що знався на мудрих порадах.</p>
+        <p class="num"></p>
+        <p class="gr">κῆρυξ Πεισήνωρ πεπνυμένα μήδεα εἰδώς.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">І спершу, звертаючись до старого, він мовив:</p>
+        <p class="num"></p>
+        <p class="gr">πρῶτον ἔπειτα γέροντα καθαπτόμενος προσέειπεν·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Старче, недалеко той муж — і сам ти зараз побачиш:</p>
+        <p class="num">40</p>
+        <p class="gr">«ὦ γέρον, οὐχ ἑκὰς οὗτος ἀνήρ, τάχα δ᾽ εἴσεαι αὐτός,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">це я скликав людей, бо туга мене діймає тяжка.</p>
+        <p class="num"></p>
+        <p class="gr">ὃς λαὸν ἤγειρα· μάλιστα δέ μ᾽ ἄλγος ἱκάνει.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Ні звістки я не чув, що військо вертається,</p>
+        <p class="num"></p>
+        <p class="gr">οὔτε τιν᾽ ἀγγελίην στρατοῦ ἔκλυον ἐρχομένοιο,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">щоб ясно вам сказати, що перший дізнався,</p>
+        <p class="num"></p>
+        <p class="gr">ἥν χ᾽ ὑμῖν σάφα εἴπω, ὅτε πρότερός γε πυθοίμην,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">ні іншої громадської справи не оголошую, —</p>
+        <p class="num"></p>
+        <p class="gr">οὔτε τι δήμιον ἄλλο πιφαύσκομαι οὐδ᾽ ἀγορεύω,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">а власну свою біду, що впала на дім мій</p>
+        <p class="num">45</p>
+        <p class="gr">ἀλλ᾽ ἐμὸν αὐτοῦ χρεῖος, ὅ μοι κακὰ ἔμπεσεν οἴκῳ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">подвійно: по-перше, я втратив шляхетного батька, що вами</p>
+        <p class="num"></p>
+        <p class="gr">δοιά· τὸ μὲν πατέρ᾽ ἐσθλὸν ἀπώλεσα, ὅς ποτ᾽ ἐν ὑμῖν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">колись отут царював і був лагідний, наче батько.</p>
+        <p class="num"></p>
+        <p class="gr">τοίσδεσσιν βασίλευε, πατὴρ δ᾽ ὣς ἤπιος ἦεν·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А нині ще більше лихо, що скоро весь дім мій</p>
+        <p class="num"></p>
+        <p class="gr">νῦν δ᾽ αὖ καὶ πολὺ μεῖζον, ὃ δὴ τάχα οἶκον ἅπαντα</p>
+      </div>
+      <div class="verse">
+        <p class="ua">дощенту зруйнує і ввесь статок понищить:</p>
+        <p class="num"></p>
+        <p class="gr">πάγχυ διαρραίσει, βίοτον δ᾽ ἀπὸ πάμπαν ὀλέσσει.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">до матері, всупереч волі її, вчепились женихи,</p>
+        <p class="num">50</p>
+        <p class="gr">μητέρι μοι μνηστῆρες ἐπέχραον οὐκ ἐθελούσῃ,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">любі сини мужів, що тут найзнатніші.</p>
+        <p class="num"></p>
+        <p class="gr">τῶν ἀνδρῶν φίλοι υἷες, οἳ ἐνθάδε γ᾽ εἰσὶν ἄριστοι,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Піти в дім Ікарія, батька її, вони бояться,</p>
+        <p class="num"></p>
+        <p class="gr">οἳ πατρὸς μὲν ἐς οἶκον ἀπερρίγασι νέεσθαι</p>
+      </div>
+      <div class="verse">
+        <p class="ua">щоб він сам придане дав за дочкою</p>
+        <p class="num"></p>
+        <p class="gr">Ἰκαρίου, ὥς κ᾽ αὐτὸς ἐεδνώσαιτο θύγατρα,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і видав, за кого схоче й хто буде їй милий.</p>
+        <p class="num"></p>
+        <p class="gr">δοίη δ᾽ ᾧ κ᾽ ἐθέλοι καί οἱ κεχαρισμένος ἔλθοι·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Натомість вони товчуться в нашому домі всі дні,</p>
+        <p class="num">55</p>
+        <p class="gr">οἱ δ᾽ εἰς ἡμέτερον πωλεύμενοι ἤματα πάντα,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">биків ріжуть, овець і кіз угодованих,</p>
+        <p class="num"></p>
+        <p class="gr">βοῦς ἱερεύοντες καὶ ὄις καὶ πίονας αἶγας</p>
+      </div>
+      <div class="verse">
+        <p class="ua">бенкетують і п'ють вино іскристе</p>
+        <p class="num"></p>
+        <p class="gr">εἰλαπινάζουσιν πίνουσί τε αἴθοπα οἶνον</p>
+      </div>
+      <div class="verse">
+        <p class="ua">без міри — і все марнується. Немає-бо мужа,</p>
+        <p class="num"></p>
+        <p class="gr">μαψιδίως· τὰ δὲ πολλὰ κατάνεται. οὐ γὰρ ἔπ᾽ ἀνήρ,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">як Одіссей був, щоб від дому біду відвернути.</p>
+        <p class="num"></p>
+        <p class="gr">οἷος Ὀδυσσεὺς ἔσκεν, ἀρὴν ἀπὸ οἴκου ἀμῦναι.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Ми ж боронитись не годні — та й потім</p>
+        <p class="num">60</p>
+        <p class="gr">ἡμεῖς δ᾽ οὔ νύ τι τοῖοι ἀμυνέμεν· ἦ καὶ ἔπειτα</p>
+      </div>
+      <div class="verse">
+        <p class="ua">жалюгідні будемо, до відсічі не вдатні.</p>
+        <p class="num"></p>
+        <p class="gr">λευγαλέοι τ᾽ ἐσόμεσθα καὶ οὐ δεδαηκότες ἀλκήν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">О, я б оборонився, якби мав силу!</p>
+        <p class="num"></p>
+        <p class="gr">ἦ τ᾽ ἂν ἀμυναίμην, εἴ μοι δύναμίς γε παρείη.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Нестерпні-бо діються діла, і вже без жодної честі</p>
+        <p class="num"></p>
+        <p class="gr">οὐ γὰρ ἔτ᾽ ἀνσχετὰ ἔργα τετεύχαται, οὐδ᾽ ἔτι καλῶς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">гине мій дім. Обуріться ж і ви самі,</p>
+        <p class="num"></p>
+        <p class="gr">οἶκος ἐμὸς διόλωλε. νεμεσσήθητε καὶ αὐτοί,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">посоромтесь інших людей, сусідів,</p>
+        <p class="num">65</p>
+        <p class="gr">ἄλλους τ᾽ αἰδέσθητε περικτίονας ἀνθρώπους,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">що мешкають довкола; побійтесь гніву богів —</p>
+        <p class="num"></p>
+        <p class="gr">οἳ περιναιετάουσι· θεῶν δ᾽ ὑποδείσατε μῆνιν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">щоб не повернули вони цих злих діл на вас самих!</p>
+        <p class="num"></p>
+        <p class="gr">μή τι μεταστρέψωσιν ἀγασσάμενοι κακὰ ἔργα.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Благаю і Зевсом Олімпійським, і Фемідою,</p>
+        <p class="num"></p>
+        <p class="gr">λίσσομαι ἠμὲν Ζηνὸς Ὀλυμπίου ἠδὲ Θέμιστος,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">що ради людські розпускає і скликає:</p>
+        <p class="num"></p>
+        <p class="gr">ἥ τ᾽ ἀνδρῶν ἀγορὰς ἠμὲν λύει ἠδὲ καθίζει·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">схаменіться, друзі! Дайте мені самому тугою гіркою</p>
+        <p class="num">70</p>
+        <p class="gr">σχέσθε, φίλοι, καί μ᾽ οἶον ἐάσατε πένθεϊ λυγρῷ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">мучитись... Хіба що батько мій, шляхетний Одіссей,</p>
+        <p class="num"></p>
+        <p class="gr">τείρεσθ᾽, εἰ μή πού τι πατὴρ ἐμὸς ἐσθλὸς Ὀδυσσεὺς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">колись зловмисно кривдив міднолитих ахейців —</p>
+        <p class="num"></p>
+        <p class="gr">δυσμενέων κάκ᾽ ἔρεξεν ἐυκνήμιδας Ἀχαιούς,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і ви за те мені зловмисно мститесь,</p>
+        <p class="num"></p>
+        <p class="gr">τῶν μ᾽ ἀποτινύμενοι κακὰ ῥέζετε δυσμενέοντες,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">цих ось нацьковуючи. Та мені було б краще,</p>
+        <p class="num"></p>
+        <p class="gr">τούτους ὀτρύνοντες. ἐμοὶ δέ κε κέρδιον εἴη</p>
+      </div>
+      <div class="verse">
+        <p class="ua">якби ви самі проїдали і скарби мої, й отари:</p>
+        <p class="num">75</p>
+        <p class="gr">ὑμέας ἐσθέμεναι κειμήλιά τε πρόβασίν τε.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">якби ви їли — була б колись і відплата,</p>
+        <p class="num"></p>
+        <p class="gr">εἴ χ᾽ ὑμεῖς γε φάγοιτε, τάχ᾽ ἄν ποτε καὶ τίσις εἴη·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">ми ж бо ходили б містом і словом допоминались,</p>
+        <p class="num"></p>
+        <p class="gr">τόφρα γὰρ ἂν κατὰ ἄστυ ποτιπτυσσοίμεθα μύθῳ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">майна вимагаючи, поки все не віддали б.</p>
+        <p class="num"></p>
+        <p class="gr">χρήματ᾽ ἀπαιτίζοντες, ἕως κ᾽ ἀπὸ πάντα δοθείη·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А так — ви біль безпорадний у серце мені кладете».</p>
+        <p class="num"></p>
+        <p class="gr">νῦν δέ μοι ἀπρήκτους ὀδύνας ἐμβάλλετε θυμῷ.»</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="polotno">
+    <h2>Пенелопине полотно</h2>
+    <p class="lines-range">рядки 80–128</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Так він сказав у гніві — і скіпетр кинув об землю,</p>
+        <p class="num">80</p>
+        <p class="gr">ὣς φάτο χωόμενος, ποτὶ δὲ σκῆπτρον βάλε γαίῃ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">слізьми зайшовшись. І жаль охопив увесь люд.</p>
+        <p class="num"></p>
+        <p class="gr">δάκρυ᾽ ἀναπρήσας· οἶκτος δ᾽ ἕλε λαὸν ἅπαντα.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Всі інші мовчали тоді, і ніхто не насмілився</p>
+        <p class="num"></p>
+        <p class="gr">ἔνθ᾽ ἄλλοι μὲν πάντες ἀκὴν ἔσαν, οὐδέ τις ἔτλη</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Телемахові словом жорстким відповісти.</p>
+        <p class="num"></p>
+        <p class="gr">Τηλέμαχον μύθοισιν ἀμείψασθαι χαλεποῖσιν·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Лиш Антіной один, відповідаючи, мовив:</p>
+        <p class="num"></p>
+        <p class="gr">Ἀντίνοος δέ μιν οἶος ἀμειβόμενος προσέειπε·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Телемаху-красномовцю, нестримний у запалі! Що ти сказав,</p>
+        <p class="num">85</p>
+        <p class="gr">«Τηλέμαχ᾽ ὑψαγόρη, μένος ἄσχετε, ποῖον ἔειπες</p>
+      </div>
+      <div class="verse">
+        <p class="ua">нас ганьблячи? Хочеш пляму на нас накинути?</p>
+        <p class="num"></p>
+        <p class="gr">ἡμέας αἰσχύνων· ἐθέλοις δέ κε μῶμον ἀνάψαι.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Та не женихи ахейські тобі винні —</p>
+        <p class="num"></p>
+        <p class="gr">σοὶ δ᾽ οὔ τι μνηστῆρες Ἀχαιῶν αἴτιοί εἰσιν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">винна люба матінка твоя, що на хитрощі багата.</p>
+        <p class="num"></p>
+        <p class="gr">ἀλλὰ φίλη μήτηρ, ἥ τοι πέρι κέρδεα οἶδεν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Уже третій рік минає, скоро й четвертий піде,</p>
+        <p class="num"></p>
+        <p class="gr">ἤδη γὰρ τρίτον ἐστὶν ἔτος, τάχα δ᾽ εἶσι τέταρτον,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">як вона морочить серця в грудях ахейців:</p>
+        <p class="num">90</p>
+        <p class="gr">ἐξ οὗ ἀτέμβει θυμὸν ἐνὶ στήθεσσιν Ἀχαιῶν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">всім надію подає, кожному обіцяє,</p>
+        <p class="num"></p>
+        <p class="gr">πάντας μέν ῥ᾽ ἔλπει καὶ ὑπίσχεται ἀνδρὶ ἑκάστῳ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">вісті шле — а на думці має інше.</p>
+        <p class="num"></p>
+        <p class="gr">ἀγγελίας προϊεῖσα, νόος δέ οἱ ἄλλα μενοινᾷ.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А ще й таку хитрість вона в думках сплела:</p>
+        <p class="num"></p>
+        <p class="gr">ἡ δὲ δόλον τόνδ᾽ ἄλλον ἐνὶ φρεσὶ μερμήριξε·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">великі кросна поставивши в покоях, ткала</p>
+        <p class="num"></p>
+        <p class="gr">στησαμένη μέγαν ἱστὸν ἐνὶ μεγάροισιν ὕφαινε,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">тонке полотно, безмірне, — і нам казала:</p>
+        <p class="num">95</p>
+        <p class="gr">λεπτὸν καὶ περίμετρον· ἄφαρ δ᾽ ἡμῖν μετέειπε·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">„Юнаки, мої женихи! Умер божистий Одіссей,</p>
+        <p class="num"></p>
+        <p class="gr">"κοῦροι ἐμοὶ μνηστῆρες, ἐπεὶ θάνε δῖος Ὀδυσσεύς,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">та з весіллям заждіть, не кваптеся, поки покривало</p>
+        <p class="num"></p>
+        <p class="gr">μίμνετ᾽ ἐπειγόμενοι τὸν ἐμὸν γάμον, εἰς ὅ κε φᾶρος</p>
+      </div>
+      <div class="verse">
+        <p class="ua">дотчу — щоб пряжа моя не пішла намарне, —</p>
+        <p class="num"></p>
+        <p class="gr">ἐκτελέσω, μή μοι μεταμώνια νήματ᾽ ὄληται,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">героєві Лаерту на погреб: на час, коли його</p>
+        <p class="num"></p>
+        <p class="gr">Λαέρτῃ ἥρωι ταφήιον, εἰς ὅτε κέν μιν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">згубна доля смерті скорботної здолає.</p>
+        <p class="num">100</p>
+        <p class="gr">μοῖρ᾽ ὀλοὴ καθέλῃσι τανηλεγέος θανάτοιο,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Хай не докорить мені жодна ахеянка в народі,</p>
+        <p class="num"></p>
+        <p class="gr">μή τίς μοι κατὰ δῆμον Ἀχαιιάδων νεμεσήσῃ,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">що муж, який стільки надбав, лежить без покрову".</p>
+        <p class="num"></p>
+        <p class="gr">αἴ κεν ἄτερ σπείρου κεῖται πολλὰ κτεατίσσας."</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Так казала — і скорилось їй наше горде серце.</p>
+        <p class="num"></p>
+        <p class="gr">ὣς ἔφαθ᾽, ἡμῖν δ᾽ αὖτ᾽ ἐπεπείθετο θυμὸς ἀγήνωρ.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">І справді: вдень вона ткала велике полотно,</p>
+        <p class="num"></p>
+        <p class="gr">ἔνθα καὶ ἠματίη μὲν ὑφαίνεσκεν μέγαν ἱστόν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">а ночами, смолоскипи поставивши, розпускала.</p>
+        <p class="num">105</p>
+        <p class="gr">νύκτας δ᾽ ἀλλύεσκεν, ἐπεὶ δαΐδας παραθεῖτο.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Три роки тривав обман, і вірили ахейці;</p>
+        <p class="num"></p>
+        <p class="gr">ὣς τρίετες μὲν ἔληθε δόλῳ καὶ ἔπειθεν Ἀχαιούς·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">коли ж четвертий рік прийшов і пори надійшли,</p>
+        <p class="num"></p>
+        <p class="gr">ἀλλ᾽ ὅτε τέτρατον ἦλθεν ἔτος καὶ ἐπήλυθον ὧραι,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">тоді нам сказала одна з жінок, що все знала, —</p>
+        <p class="num"></p>
+        <p class="gr">καὶ τότε δή τις ἔειπε γυναικῶν, ἣ σάφα ᾔδη,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і ми застали її, як розпускала славне полотно.</p>
+        <p class="num"></p>
+        <p class="gr">καὶ τήν γ᾽ ἀλλύουσαν ἐφεύρομεν ἀγλαὸν ἱστόν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Тож мусила вона його скінчити, хоч і не хотіла.</p>
+        <p class="num">110</p>
+        <p class="gr">ὣς τὸ μὲν ἐξετέλεσσε καὶ οὐκ ἐθέλουσ᾽, ὑπ᾽ ἀνάγκης·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А тобі женихи ось як відповідають — щоб знав ти</p>
+        <p class="num"></p>
+        <p class="gr">σοὶ δ᾽ ὧδε μνηστῆρες ὑποκρίνονται, ἵν᾽ εἰδῇς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">сам у душі своїй і щоб знали всі ахейці:</p>
+        <p class="num"></p>
+        <p class="gr">αὐτὸς σῷ θυμῷ, εἰδῶσι δὲ πάντες Ἀχαιοί·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">матір свою відішли і звели їй заміж вийти,</p>
+        <p class="num"></p>
+        <p class="gr">μητέρα σὴν ἀπόπεμψον, ἄνωχθι δέ μιν γαμέεσθαι</p>
+      </div>
+      <div class="verse">
+        <p class="ua">за кого батько накаже і хто їй самій до вподоби.</p>
+        <p class="num"></p>
+        <p class="gr">τῷ ὅτεῴ τε πατὴρ κέλεται καὶ ἁνδάνει αὐτῇ.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А як довго ще мучитиме синів ахейських,</p>
+        <p class="num">115</p>
+        <p class="gr">εἰ δ᾽ ἔτ᾽ ἀνιήσει γε πολὺν χρόνον υἷας Ἀχαιῶν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">плекаючи в серці те, чим щедро її обдарувала Афіна, —</p>
+        <p class="num"></p>
+        <p class="gr">τὰ φρονέουσ᾽ ἀνὰ θυμόν, ὅ οἱ πέρι δῶκεν Ἀθήνη</p>
+      </div>
+      <div class="verse">
+        <p class="ua">вміння в ділах прекрасних, і розум добрий,</p>
+        <p class="num"></p>
+        <p class="gr">ἔργα τ᾽ ἐπίστασθαι περικαλλέα καὶ φρένας ἐσθλὰς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і хитрощі, про які ми не чули навіть про давніх</p>
+        <p class="num"></p>
+        <p class="gr">κέρδεά θ᾽, οἷ᾽ οὔ πώ τιν᾽ ἀκούομεν οὐδὲ παλαιῶν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">пишнокосих ахеянок, що жили колись, —</p>
+        <p class="num"></p>
+        <p class="gr">τάων αἳ πάρος ἦσαν ἐυπλοκαμῖδες Ἀχαιαί,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">ні про Тіро, ні про Алкмену, ні про Мікену вінценосну:</p>
+        <p class="num">120</p>
+        <p class="gr">Τυρώ τ᾽ Ἀλκμήνη τε ἐυστέφανός τε Μυκήνη·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">жодна з них не рівнялася думками з Пенелопою! —</p>
+        <p class="num"></p>
+        <p class="gr">τάων οὔ τις ὁμοῖα νοήματα Πηνελοπείῃ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">та цього одного вона слушно не розважила:</p>
+        <p class="num"></p>
+        <p class="gr">ᾔδη· ἀτὰρ μὲν τοῦτό γ᾽ ἐναίσιμον οὐκ ἐνόησε.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">доти проїдатимуть твій статок і майно,</p>
+        <p class="num"></p>
+        <p class="gr">τόφρα γὰρ οὖν βίοτόν τε τεὸν καὶ κτήματ᾽ ἔδονται,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">доки вона триматиметься думки, яку нині</p>
+        <p class="num"></p>
+        <p class="gr">ὄφρα κε κείνη τοῦτον ἔχῃ νόον, ὅν τινά οἱ νῦν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">боги їй у груди вкладають. Собі велику славу</p>
+        <p class="num">125</p>
+        <p class="gr">ἐν στήθεσσι τιθεῖσι θεοί. μέγα μὲν κλέος αὐτῇ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">вона здобуває, тобі ж — тугу за добром утраченим.</p>
+        <p class="num"></p>
+        <p class="gr">ποιεῖτ᾽, αὐτὰρ σοί γε ποθὴν πολέος βιότοιο.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Ми ж ні до справ своїх не підемо, ні куди-інде,</p>
+        <p class="num"></p>
+        <p class="gr">ἡμεῖς δ᾽ οὔτ᾽ ἐπὶ ἔργα πάρος γ᾽ ἴμεν οὔτε πῃ ἄλλῃ,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">поки вона не вийде за того з ахейців, за кого схоче».</p>
+        <p class="num"></p>
+        <p class="gr">πρίν γ᾽ αὐτὴν γήμασθαι Ἀχαιῶν ᾧ κ᾽ ἐθέλῃσι.»</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="orly">
+    <h2>Зевсові орли</h2>
+    <p class="lines-range">рядки 129–176</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Відповів йому на те Телемах розважливий:</p>
+        <p class="num"></p>
+        <p class="gr">τὸν δ᾽ αὖ Τηλέμαχος πεπνυμένος ἀντίον ηὔδα·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Антіною, не можу я вигнати з дому проти волі</p>
+        <p class="num">130</p>
+        <p class="gr">«Ἀντίνο᾽, οὔ πως ἔστι δόμων ἀέκουσαν ἀπῶσαι</p>
+      </div>
+      <div class="verse">
+        <p class="ua">ту, що мене народила й зростила. А батько мій десь у світі —</p>
+        <p class="num"></p>
+        <p class="gr">ἥ μ᾽ ἔτεχ᾽, ἥ μ᾽ ἔθρεψε· πατὴρ δ᾽ ἐμὸς ἄλλοθι γαίης,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">живий чи умер. І тяжко було б мені Ікарію</p>
+        <p class="num"></p>
+        <p class="gr">ζώει ὅ γ᾽ ἦ τέθνηκε· κακὸν δέ με πόλλ᾽ ἀποτίνειν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">сплачувати стільки, якби я сам матір відіслав.</p>
+        <p class="num"></p>
+        <p class="gr">Ἰκαρίῳ, αἴ κ᾽ αὐτὸς ἑκὼν ἀπὸ μητέρα πέμψω.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">І від батька її я лиха зазнаю, й інших демон</p>
+        <p class="num"></p>
+        <p class="gr">ἐκ γὰρ τοῦ πατρὸς κακὰ πείσομαι, ἄλλα δὲ δαίμων</p>
+      </div>
+      <div class="verse">
+        <p class="ua">пошле, бо мати, з дому ідучи, накличе</p>
+        <p class="num">135</p>
+        <p class="gr">δώσει, ἐπεὶ μήτηρ στυγερὰς ἀρήσετ᾽ ἐρινῦς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">еріній страшних; і осуд людський на мене</p>
+        <p class="num"></p>
+        <p class="gr">οἴκου ἀπερχομένη· νέμεσις δέ μοι ἐξ ἀνθρώπων</p>
+      </div>
+      <div class="verse">
+        <p class="ua">впаде. Ні, такого слова я не вимовлю ніколи!</p>
+        <p class="num"></p>
+        <p class="gr">ἔσσεται· ὣς οὐ τοῦτον ἐγώ ποτε μῦθον ἐνίψω.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А якщо ваше власне серце цього соромиться —</p>
+        <p class="num"></p>
+        <p class="gr">ὑμέτερος δ᾽ εἰ μὲν θυμὸς νεμεσίζεται αὐτῶν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">геть із покоїв моїх! Про інші учти дбайте,</p>
+        <p class="num"></p>
+        <p class="gr">ἔξιτέ μοι μεγάρων, ἄλλας δ᾽ ἀλεγύνετε δαῖτας</p>
+      </div>
+      <div class="verse">
+        <p class="ua">своє добро проїдайте, чергуючись по домівках.</p>
+        <p class="num">140</p>
+        <p class="gr">ὑμὰ κτήματ᾽ ἔδοντες ἀμειβόμενοι κατὰ οἴκους.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Але якщо вам здається кращим і милішим</p>
+        <p class="num"></p>
+        <p class="gr">εἰ δ᾽ ὕμιν δοκέει τόδε λωίτερον καὶ ἄμεινον</p>
+      </div>
+      <div class="verse">
+        <p class="ua">безкарно нищити статок одного чоловіка —</p>
+        <p class="num"></p>
+        <p class="gr">ἔμμεναι, ἀνδρὸς ἑνὸς βίοτον νήποινον ὀλέσθαι,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">нищіть! А я волатиму до богів вічносущих:</p>
+        <p class="num"></p>
+        <p class="gr">κείρετ᾽· ἐγὼ δὲ θεοὺς ἐπιβώσομαι αἰὲν ἐόντας,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">може, Зевс колись дасть, щоб діла відплатились, —</p>
+        <p class="num"></p>
+        <p class="gr">αἴ κέ ποθι Ζεὺς δῷσι παλίντιτα ἔργα γενέσθαι.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">тоді без відплати й ви в цьому домі загинете».</p>
+        <p class="num">145</p>
+        <p class="gr">νήποινοί κεν ἔπειτα δόμων ἔντοσθεν ὄλοισθε.»</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">Так мовив Телемах. І Зевс широкоокий двох орлів</p>
+        <p class="num"></p>
+        <p class="gr">ὣς φάτο Τηλέμαχος, τῷ δ᾽ αἰετὼ εὐρύοπα Ζεὺς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">йому послав із високої гірської вершини.</p>
+        <p class="num"></p>
+        <p class="gr">ὑψόθεν ἐκ κορυφῆς ὄρεος προέηκε πέτεσθαι.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Летіли вони спершу за подихом вітру,</p>
+        <p class="num"></p>
+        <p class="gr">τὼ δ᾽ ἕως μέν ῥ᾽ ἐπέτοντο μετὰ πνοιῇς ἀνέμοιο</p>
+      </div>
+      <div class="verse">
+        <p class="ua">близько один при одному, розпростерши крила;</p>
+        <p class="num"></p>
+        <p class="gr">πλησίω ἀλλήλοισι τιταινομένω πτερύγεσσιν·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">коли ж досягли середини гомінкої ради,</p>
+        <p class="num">150</p>
+        <p class="gr">ἀλλ᾽ ὅτε δὴ μέσσην ἀγορὴν πολύφημον ἱκέσθην,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">закружляли, замахали крильми частими,</p>
+        <p class="num"></p>
+        <p class="gr">ἔνθ᾽ ἐπιδινηθέντε τιναξάσθην πτερὰ πυκνά,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">на голови всіх поглядаючи — і смерть віщували в очах;</p>
+        <p class="num"></p>
+        <p class="gr">ἐς δ᾽ ἰδέτην πάντων κεφαλάς, ὄσσοντο δ᾽ ὄλεθρον·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">роздерши пазурами щоки собі і шиї,</p>
+        <p class="num"></p>
+        <p class="gr">δρυψαμένω δ᾽ ὀνύχεσσι παρειὰς ἀμφί τε δειρὰς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">праворуч шугнули — понад домами й містом.</p>
+        <p class="num"></p>
+        <p class="gr">δεξιὼ ἤιξαν διά τ᾽ οἰκία καὶ πόλιν αὐτῶν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Всі здивувались, на власні очі птахів побачивши,</p>
+        <p class="num">155</p>
+        <p class="gr">θάμβησαν δ᾽ ὄρνιθας, ἐπεὶ ἴδον ὀφθαλμοῖσιν·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і в серці міркували, що ж воно має статись.</p>
+        <p class="num"></p>
+        <p class="gr">ὥρμηναν δ᾽ ἀνὰ θυμὸν ἅ περ τελέεσθαι ἔμελλον.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Тоді до них промовив старий герой Аліферс,</p>
+        <p class="num"></p>
+        <p class="gr">τοῖσι δὲ καὶ μετέειπε γέρων ἥρως Ἁλιθέρσης</p>
+      </div>
+      <div class="verse">
+        <p class="ua">син Мастора: він-бо один з-між ровесників умів</p>
+        <p class="num"></p>
+        <p class="gr">Μαστορίδης· ὁ γὰρ οἶος ὁμηλικίην ἐκέκαστο</p>
+      </div>
+      <div class="verse">
+        <p class="ua">птахів розпізнавати і провіщати долю.</p>
+        <p class="num"></p>
+        <p class="gr">ὄρνιθας γνῶναι καὶ ἐναίσιμα μυθήσασθαι·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Він, зичливий до них, до ради промовив:</p>
+        <p class="num">160</p>
+        <p class="gr">ὅ σφιν ἐὺ φρονέων ἀγορήσατο καὶ μετέειπε·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Слухайте нині мене, ітакійці, що я скажу, —</p>
+        <p class="num"></p>
+        <p class="gr">«κέκλυτε δὴ νῦν μευ, Ἰθακήσιοι, ὅττι κεν εἴπω·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">а найбільше до женихів я звертаю це слово:</p>
+        <p class="num"></p>
+        <p class="gr">μνηστῆρσιν δὲ μάλιστα πιφαυσκόμενος τάδε εἴρω·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">на них-бо велика біда котиться! Одіссей</p>
+        <p class="num"></p>
+        <p class="gr">τοῖσιν γὰρ μέγα πῆμα κυλίνδεται· οὐ γὰρ Ὀδυσσεὺς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">недовго вже буде далеко від рідних — десь він</p>
+        <p class="num"></p>
+        <p class="gr">δὴν ἀπάνευθε φίλων ὧν ἔσσεται, ἀλλά που ἤδη</p>
+      </div>
+      <div class="verse">
+        <p class="ua">уже близько, і всім оцим убивство й смерть</p>
+        <p class="num">165</p>
+        <p class="gr">ἐγγὺς ἐὼν τοίσδεσσι φόνον καὶ κῆρα φυτεύει</p>
+      </div>
+      <div class="verse">
+        <p class="ua">сіє. Та й багатьом іншим лихо буде з нас,</p>
+        <p class="num"></p>
+        <p class="gr">πάντεσσιν· πολέσιν δὲ καὶ ἄλλοισιν κακὸν ἔσται,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">що на Ітаці живемо осяйній. Тож завчасно</p>
+        <p class="num"></p>
+        <p class="gr">οἳ νεμόμεσθ᾽ Ἰθάκην ἐυδείελον. ἀλλὰ πολὺ πρὶν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">подумаймо, як їх зупинити. А ще краще — хай самі</p>
+        <p class="num"></p>
+        <p class="gr">φραζώμεσθ᾽ ὥς κεν καταπαύσομεν· οἱ δὲ καὶ αὐτοὶ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">спиняться: це ж бо для них одразу вигідніше.</p>
+        <p class="num"></p>
+        <p class="gr">παυέσθων· καὶ γάρ σφιν ἄφαρ τόδε λώιόν ἐστιν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Не як невіглас-бо я віщую, а добре знаючи:</p>
+        <p class="num">170</p>
+        <p class="gr">οὐ γὰρ ἀπείρητος μαντεύομαι, ἀλλ᾽ ἐὺ εἰδώς·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і йому, кажу вам, усе справдилось,</p>
+        <p class="num"></p>
+        <p class="gr">καὶ γὰρ κείνῳ φημὶ τελευτηθῆναι ἅπαντα,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">що я провістив, коли на Іліон рушали</p>
+        <p class="num"></p>
+        <p class="gr">ὥς οἱ ἐμυθεόμην, ὅτε Ἴλιον εἰσανέβαινον</p>
+      </div>
+      <div class="verse">
+        <p class="ua">аргів'яни, а з ними — велемудрий Одіссей.</p>
+        <p class="num"></p>
+        <p class="gr">Ἀργεῖοι, μετὰ δέ σφιν ἔβη πολύμητις Ὀδυσσεύς.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Казав я: багато зазнавши лих, супутців усіх утративши,</p>
+        <p class="num"></p>
+        <p class="gr">φῆν κακὰ πολλὰ παθόντ᾽, ὀλέσαντ᾽ ἄπο πάντας ἑταίρους,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">нікому не знаний, на двадцятому році</p>
+        <p class="num">175</p>
+        <p class="gr">ἄγνωστον πάντεσσιν ἐεικοστῷ ἐνιαυτῷ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">він вернеться додому. І ось усе це нині справджується».</p>
+        <p class="num"></p>
+        <p class="gr">οἴκαδ᾽ ἐλεύσεσθαι· τὰ δὲ δὴ νῦν πάντα τελεῖται.»</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="evrimah2">
+    <h2>Зухвальство Еврімаха</h2>
+    <p class="lines-range">рядки 177–207</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Тоді Еврімах, син Поліба, озвався до нього:</p>
+        <p class="num"></p>
+        <p class="gr">τὸν δ᾽ αὖτ᾽ Εὐρύμαχος Πολύβου πάις ἀντίον ηὔδα·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Старче! Іди-но додому й дітям своїм пророкуй,</p>
+        <p class="num"></p>
+        <p class="gr">«ὦ γέρον, εἰ δ᾽ ἄγε νῦν μαντεύεο σοῖσι τέκεσσιν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">щоб не спіткало їх часом якесь лихо в майбутньому.</p>
+        <p class="num"></p>
+        <p class="gr">οἴκαδ᾽ ἰών, μή πού τι κακὸν πάσχωσιν ὀπίσσω·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А в цьому я від тебе куди кращий провісник.</p>
+        <p class="num">180</p>
+        <p class="gr">ταῦτα δ᾽ ἐγὼ σέο πολλὸν ἀμείνων μαντεύεσθαι.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Птахів багато під промінням сонця</p>
+        <p class="num"></p>
+        <p class="gr">ὄρνιθες δέ τε πολλοὶ ὑπ᾽ αὐγὰς ἠελίοιο</p>
+      </div>
+      <div class="verse">
+        <p class="ua">літає, і не всі вони віщі. А Одіссей</p>
+        <p class="num"></p>
+        <p class="gr">φοιτῶσ᾽, οὐδέ τε πάντες ἐναίσιμοι· αὐτὰρ Ὀδυσσεὺς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">загинув далеко — от і ти б краще з ним разом</p>
+        <p class="num"></p>
+        <p class="gr">ὤλετο τῆλ᾽, ὡς καὶ σὺ καταφθίσθαι σὺν ἐκείνῳ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">пропав! Не просторікував би стільки пророцтв</p>
+        <p class="num"></p>
+        <p class="gr">ὤφελες. οὐκ ἂν τόσσα θεοπροπέων ἀγόρευες,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і не під'юджував би гнівного Телемаха,</p>
+        <p class="num">185</p>
+        <p class="gr">οὐδέ κε Τηλέμαχον κεχολωμένον ὧδ᾽ ἀνιείης,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">дарунка для дому свого чекаючи — може, дасть.</p>
+        <p class="num"></p>
+        <p class="gr">σῷ οἴκῳ δῶρον ποτιδέγμενος, αἴ κε πόρῃσιν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Але скажу тобі — і це неодмінно збудеться:</p>
+        <p class="num"></p>
+        <p class="gr">ἀλλ᾽ ἔκ τοι ἐρέω, τὸ δὲ καὶ τετελεσμένον ἔσται·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">якщо ти, знавець старого й бувалого, юнака</p>
+        <p class="num"></p>
+        <p class="gr">αἴ κε νεώτερον ἄνδρα παλαιά τε πολλά τε εἰδὼς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">словами облудними підбуриш до гніву, —</p>
+        <p class="num"></p>
+        <p class="gr">παρφάμενος ἐπέεσσιν ἐποτρύνῃς χαλεπαίνειν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">то спершу самому йому це прикріше буде,</p>
+        <p class="num">190</p>
+        <p class="gr">αὐτῷ μέν οἱ πρῶτον ἀνιηρέστερον ἔσται,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">бо вдіяти все одно нічого він не зможе;</p>
+        <p class="num"></p>
+        <p class="gr">πρῆξαι δ᾽ ἔμπης οὔ τι δυνήσεται εἵνεκα τῶνδε·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">а на тебе, старче, накладемо кару, яку в душі</p>
+        <p class="num"></p>
+        <p class="gr">σοὶ δέ, γέρον, θωὴν ἐπιθήσομεν, ἥν κ᾽ ἐνὶ θυμῷ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">сплачувати гірко буде: тяжкий тебе біль спіткає.</p>
+        <p class="num"></p>
+        <p class="gr">τίνων ἀσχάλλῃς· χαλεπὸν δέ τοι ἔσσεται ἄλγος.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А Телемахові я сам перед усіма пораджу:</p>
+        <p class="num"></p>
+        <p class="gr">Τηλεμάχῳ δ᾽ ἐν πᾶσιν ἐγὼν ὑποθήσομαι αὐτός·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">хай матір свою в дім батька відіслати звелить —</p>
+        <p class="num">195</p>
+        <p class="gr">μητέρα ἣν ἐς πατρὸς ἀνωγέτω ἀπονέεσθαι·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">там справлять весілля і придане злагодять</p>
+        <p class="num"></p>
+        <p class="gr">οἱ δὲ γάμον τεύξουσι καὶ ἀρτυνέουσιν ἔεδνα</p>
+      </div>
+      <div class="verse">
+        <p class="ua">щедре, яке любій дочці й належить.</p>
+        <p class="num"></p>
+        <p class="gr">πολλὰ μάλ᾽, ὅσσα ἔοικε φίλης ἐπὶ παιδὸς ἕπεσθαι.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Раніше-бо, гадаю, сини ахейські не покинуть</p>
+        <p class="num"></p>
+        <p class="gr">οὐ γὰρ πρὶν παύσεσθαι ὀίομαι υἷας Ἀχαιῶν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">сватання обтяжливого: ми ж не боїмось нікого —</p>
+        <p class="num"></p>
+        <p class="gr">μνηστύος ἀργαλέης, ἐπεὶ οὔ τινα δείδιμεν ἔμπης,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">ані Телемаха, хоч який він красномовний,</p>
+        <p class="num">200</p>
+        <p class="gr">οὔτ᾽ οὖν Τηλέμαχον μάλα περ πολύμυθον ἐόντα,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">ані пророцтвами не переймаємось, що ти, старче,</p>
+        <p class="num"></p>
+        <p class="gr">οὔτε θεοπροπίης ἐμπαζόμεθ᾽, ἣν σύ, γεραιέ,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">марно провіщаєш, — тільки ненависніший стаєш.</p>
+        <p class="num"></p>
+        <p class="gr">μυθέαι ἀκράαντον, ἀπεχθάνεαι δ᾽ ἔτι μᾶλλον.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">І статок буде далі нищитись ганебно, і рівноваги</p>
+        <p class="num"></p>
+        <p class="gr">χρήματα δ᾽ αὖτε κακῶς βεβρώσεται, οὐδέ ποτ᾽ ἶσα</p>
+      </div>
+      <div class="verse">
+        <p class="ua">не буде, поки вона морочитиме ахейців</p>
+        <p class="num"></p>
+        <p class="gr">ἔσσεται, ὄφρα κεν ἥ γε διατρίβῃσιν Ἀχαιοὺς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">з весіллям своїм. А ми, щодня чекаючи,</p>
+        <p class="num">205</p>
+        <p class="gr">ὃν γάμον· ἡμεῖς δ᾽ αὖ ποτιδέγμενοι ἤματα πάντα</p>
+      </div>
+      <div class="verse">
+        <p class="ua">за чесноту її змагаємось — і до інших</p>
+        <p class="num"></p>
+        <p class="gr">εἵνεκα τῆς ἀρετῆς ἐριδαίνομεν, οὐδὲ μετ᾽ ἄλλας</p>
+      </div>
+      <div class="verse">
+        <p class="ua">не йдемо, хоч кожному з нас личило б одружитись».</p>
+        <p class="num"></p>
+        <p class="gr">ἐρχόμεθ᾽, ἃς ἐπιεικὲς ὀπυιέμεν ἐστὶν ἑκάστῳ.»</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="prohannia">
+    <h2>Прохання Телемаха</h2>
+    <p class="lines-range">рядки 208–223</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Відповів йому на те Телемах розважливий:</p>
+        <p class="num"></p>
+        <p class="gr">τὸν δ᾽ αὖ Τηλέμαχος πεπνυμένος ἀντίον ηὔδα·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Еврімаху й ви всі, женихи славетні!</p>
+        <p class="num"></p>
+        <p class="gr">«Εὐρύμαχ᾽ ἠδὲ καὶ ἄλλοι, ὅσοι μνηστῆρες ἀγαυοί,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Про це я вас більше не прошу й не говорю:</p>
+        <p class="num">210</p>
+        <p class="gr">ταῦτα μὲν οὐχ ὑμέας ἔτι λίσσομαι οὐδ᾽ ἀγορεύω·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">це вже знають боги і всі ахейці.</p>
+        <p class="num"></p>
+        <p class="gr">ἤδη γὰρ τὰ ἴσασι θεοὶ καὶ πάντες Ἀχαιοί.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Але дайте мені корабель швидкий і двадцять супутців,</p>
+        <p class="num"></p>
+        <p class="gr">ἀλλ᾽ ἄγε μοι δότε νῆα θοὴν καὶ εἴκοσ᾽ ἑταίρους,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">що зі мною пройдуть дорогу туди і назад.</p>
+        <p class="num"></p>
+        <p class="gr">οἵ κέ μοι ἔνθα καὶ ἔνθα διαπρήσσωσι κέλευθον.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Вирушу-бо я в Спарту й до Пілоса піщаного</p>
+        <p class="num"></p>
+        <p class="gr">εἶμι γὰρ ἐς Σπάρτην τε καὶ ἐς Πύλον ἠμαθόεντα</p>
+      </div>
+      <div class="verse">
+        <p class="ua">розпитати про повернення батька, що давно відсутній, —</p>
+        <p class="num">215</p>
+        <p class="gr">νόστον πευσόμενος πατρὸς δὴν οἰχομένοιο,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">може, хтось зі смертних щось скаже, чи Чутку почую</p>
+        <p class="num"></p>
+        <p class="gr">ἤν τίς μοι εἴπῃσι βροτῶν ἢ ὄσσαν ἀκούσω</p>
+      </div>
+      <div class="verse">
+        <p class="ua">від Зевса: вона найбільше розносить вісті між людьми.</p>
+        <p class="num"></p>
+        <p class="gr">ἐκ Διός, ἥ τε μάλιστα φέρει κλέος ἀνθρώποισιν·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Як почую, що батько живий і вертається, —</p>
+        <p class="num"></p>
+        <p class="gr">εἰ μέν κεν πατρὸς βίοτον καὶ νόστον ἀκούσω,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">то, хоч і змучений, потерплю ще рік;</p>
+        <p class="num"></p>
+        <p class="gr">ἦ τ᾽ ἂν τρυχόμενός περ ἔτι τλαίην ἐνιαυτόν·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">а як почую, що вмер він і немає його, —</p>
+        <p class="num">220</p>
+        <p class="gr">εἰ δέ κε τεθνηῶτος ἀκούσω μηδ᾽ ἔτ᾽ ἐόντος,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">тоді, вернувшись у рідну батьківську землю,</p>
+        <p class="num"></p>
+        <p class="gr">νοστήσας δὴ ἔπειτα φίλην ἐς πατρίδα γαῖαν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">насиплю йому могилу, справлю обряд поховальний,</p>
+        <p class="num"></p>
+        <p class="gr">σῆμά τέ οἱ χεύω καὶ ἐπὶ κτέρεα κτερεΐξω</p>
+      </div>
+      <div class="verse">
+        <p class="ua">щедрий, який належить, — і матір віддам за мужа».</p>
+        <p class="num"></p>
+        <p class="gr">πολλὰ μάλ᾽, ὅσσα ἔοικε, καὶ ἀνέρι μητέρα δώσω.»</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="mentor">
+    <h2>Докір Ментора</h2>
+    <p class="lines-range">рядки 224–241</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Так він сказав і сів. А з-поміж них підвівся</p>
+        <p class="num"></p>
+        <p class="gr">ἦ τοι ὅ γ᾽ ὣς εἰπὼν κατ᾽ ἄρ᾽ ἕζετο, τοῖσι δ᾽ ἀνέστη</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Ментор — товариш бездоганного Одіссея:</p>
+        <p class="num">225</p>
+        <p class="gr">Μέντωρ, ὅς ῥ᾽ Ὀδυσῆος ἀμύμονος ἦεν ἑταῖρος,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">той, на суднах відпливаючи, йому весь дім довірив —</p>
+        <p class="num"></p>
+        <p class="gr">καί οἱ ἰὼν ἐν νηυσὶν ἐπέτρεπεν οἶκον ἅπαντα,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">слухатись старого і все пильно берегти.</p>
+        <p class="num"></p>
+        <p class="gr">πείθεσθαί τε γέροντι καὶ ἔμπεδα πάντα φυλάσσειν·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Він, зичливий до них, до ради промовив:</p>
+        <p class="num"></p>
+        <p class="gr">ὅ σφιν ἐὺ φρονέων ἀγορήσατο καὶ μετέειπεν·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Слухайте нині мене, ітакійці, що я скажу!</p>
+        <p class="num"></p>
+        <p class="gr">«κέκλυτε δὴ νῦν μευ, Ἰθακήσιοι, ὅττι κεν εἴπω·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Хай більше жоден скіпетроносний цар не буде</p>
+        <p class="num">230</p>
+        <p class="gr">μή τις ἔτι πρόφρων ἀγανὸς καὶ ἤπιος ἔστω</p>
+      </div>
+      <div class="verse">
+        <p class="ua">прихильним, лагідним і милостивим,</p>
+        <p class="num"></p>
+        <p class="gr">σκηπτοῦχος βασιλεύς, μηδὲ φρεσὶν αἴσιμα εἰδώς,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">хай правди в серці не знає — а буде завжди</p>
+        <p class="num"></p>
+        <p class="gr">ἀλλ᾽ αἰεὶ χαλεπός τ᾽ εἴη καὶ αἴσυλα ῥέζοι·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">жорстоким і чинить беззаконня, —</p>
+        <p class="num"></p>
+        <p class="gr">ὡς οὔ τις μέμνηται Ὀδυσσῆος θείοιο</p>
+      </div>
+      <div class="verse">
+        <p class="ua">якщо ніхто не пам'ятає божистого Одіссея</p>
+        <p class="num"></p>
+        <p class="gr">λαῶν οἷσιν ἄνασσε, πατὴρ δ᾽ ὣς ἤπιος ἦεν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">з народу, яким він правив, а був же лагідний, як батько!</p>
+        <p class="num">235</p>
+        <p class="gr">ἀλλ᾽ ἦ τοι μνηστῆρας ἀγήνορας οὔ τι μεγαίρω</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Та я не женихам зухвалим дорікаю,</p>
+        <p class="num"></p>
+        <p class="gr">ἔρδειν ἔργα βίαια κακορραφίῃσι νόοιο·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">що чинять насильства в лихих задумах серця, —</p>
+        <p class="num"></p>
+        <p class="gr">σφὰς γὰρ παρθέμενοι κεφαλὰς κατέδουσι βιαίως</p>
+      </div>
+      <div class="verse">
+        <p class="ua">вони ж бо власні голови кладуть, жеручи насильно</p>
+        <p class="num"></p>
+        <p class="gr">οἶκον Ὀδυσσῆος, τὸν δ᾽ οὐκέτι φασὶ νέεσθαι.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">дім Одіссея, кажучи, що він не вернеться вже.</p>
+        <p class="num"></p>
+        <p class="gr">νῦν δ᾽ ἄλλῳ δήμῳ νεμεσίζομαι, οἷον ἅπαντες</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Я на весь інший люд обурююсь нині: як ви всі</p>
+        <p class="num">240</p>
+        <p class="gr">ἧσθ᾽ ἄνεῳ, ἀτὰρ οὔ τι καθαπτόμενοι ἐπέεσσι</p>
+      </div>
+      <div class="verse">
+        <p class="ua">сидите німо — і жменьку женихів словом не спините, хоч вас багато!»</p>
+        <p class="num"></p>
+        <p class="gr">παύρους μνηστῆρας καταπαύετε πολλοὶ ἐόντες.»</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="leokrit">
+    <h2>Глум Леокріта</h2>
+    <p class="lines-range">рядки 242–259</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Тоді Леокріт, син Евенора, озвався до нього:</p>
+        <p class="num"></p>
+        <p class="gr">τὸν δ᾽ Εὐηνορίδης Λειώκριτος ἀντίον ηὔδα·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Менторе шкідливий, безумцю! Що ти сказав,</p>
+        <p class="num"></p>
+        <p class="gr">«Μέντορ ἀταρτηρέ, φρένας ἠλεέ, ποῖον ἔειπες</p>
+      </div>
+      <div class="verse">
+        <p class="ua">нас підбурюючи їх спиняти? Тяжко-бо</p>
+        <p class="num"></p>
+        <p class="gr">ἡμέας ὀτρύνων καταπαυέμεν. ἀργαλέον δὲ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">навіть численнішим битися з мужами за бенкет.</p>
+        <p class="num">245</p>
+        <p class="gr">ἀνδράσι καὶ πλεόνεσσι μαχήσασθαι περὶ δαιτί.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Якби й сам ітакієць Одіссей, прийшовши,</p>
+        <p class="num"></p>
+        <p class="gr">εἴ περ γάρ κ᾽ Ὀδυσεὺς Ἰθακήσιος αὐτὸς ἐπελθὼν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">женихів славетних, що в домі його бенкетують,</p>
+        <p class="num"></p>
+        <p class="gr">δαινυμένους κατὰ δῶμα ἑὸν μνηστῆρας ἀγαυοὺς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">надумав у серці з покоїв повиганяти, —</p>
+        <p class="num"></p>
+        <p class="gr">ἐξελάσαι μεγάροιο μενοινήσει᾽ ἐνὶ θυμῷ,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">не зраділа б дружина його, хоч як за ним тужить,</p>
+        <p class="num"></p>
+        <p class="gr">οὔ κέν οἱ κεχάροιτο γυνή, μάλα περ χατέουσα,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">приходові: тут же й спіткав би він ганебну загибель,</p>
+        <p class="num">250</p>
+        <p class="gr">ἐλθόντ᾽, ἀλλά κεν αὐτοῦ ἀεικέα πότμον ἐπίσποι,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">з численнішими б'ючись. А ти не до ладу сказав.</p>
+        <p class="num"></p>
+        <p class="gr">εἰ πλεόνεσσι μάχοιτο· σὺ δ᾽ οὐ κατὰ μοῖραν ἔειπες.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Ну ж бо, люди, розходьтеся кожен до справи своєї!</p>
+        <p class="num"></p>
+        <p class="gr">ἀλλ᾽ ἄγε, λαοὶ μὲν σκίδνασθ᾽ ἐπὶ ἔργα ἕκαστος,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А цьому дорогу нехай споряджають Ментор з Аліферсом —</p>
+        <p class="num"></p>
+        <p class="gr">τούτῳ δ᾽ ὀτρυνέει Μέντωρ ὁδὸν ἠδ᾽ Ἁλιθέρσης,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">вони ж бо здавна батьківські його товариші.</p>
+        <p class="num"></p>
+        <p class="gr">οἵ τέ οἱ ἐξ ἀρχῆς πατρώιοί εἰσιν ἑταῖροι.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Та, гадаю, ще довго він сидітиме й вісті</p>
+        <p class="num">255</p>
+        <p class="gr">ἀλλ᾽ ὀίω, καὶ δηθὰ καθήμενος ἀγγελιάων</p>
+      </div>
+      <div class="verse">
+        <p class="ua">слухатиме на Ітаці — дороги цієї не здійснить він ніколи».</p>
+        <p class="num"></p>
+        <p class="gr">πεύσεται εἰν Ἰθάκῃ, τελέει δ᾽ ὁδὸν οὔ ποτε ταύτην.»</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">Так він промовив — і розпустив раду швидко.</p>
+        <p class="num"></p>
+        <p class="gr">ὣς ἄρ᾽ ἐφώνησεν, λῦσεν δ᾽ ἀγορὴν αἰψηρήν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Розійшлися вони по своїх домівках,</p>
+        <p class="num"></p>
+        <p class="gr">οἱ μὲν ἄρ᾽ ἐσκίδναντο ἑὰ πρὸς δώμαθ᾽ ἕκαστος,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">а женихи подались у дім божистого Одіссея.</p>
+        <p class="num"></p>
+        <p class="gr">μνηστῆρες δ᾽ ἐς δώματ᾽ ἴσαν θείου Ὀδυσῆος.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="molytva">
+    <h2>Молитва біля моря</h2>
+    <p class="lines-range">рядки 260–295</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Телемах же, пішовши оддалік на берег моря,</p>
+        <p class="num">260</p>
+        <p class="gr">Τηλέμαχος δ᾽ ἀπάνευθε κιὼν ἐπὶ θῖνα θαλάσσης,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">руки умив у сивій воді й молився Афіні:</p>
+        <p class="num"></p>
+        <p class="gr">χεῖρας νιψάμενος πολιῆς ἁλὸς εὔχετ᾽ Ἀθήνῃ·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Почуй мене, боже, що вчора приходив у дім наш</p>
+        <p class="num"></p>
+        <p class="gr">«κλῦθί μευ, ὃ χθιζὸς θεὸς ἤλυθες ἡμέτερον δῶ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і звелів мені кораблем по імлистому морю</p>
+        <p class="num"></p>
+        <p class="gr">καὶ μ᾽ ἐν νηὶ κέλευσας ἐπ᾽ ἠεροειδέα πόντον</p>
+      </div>
+      <div class="verse">
+        <p class="ua">плисти — розпитати про повернення батька,</p>
+        <p class="num"></p>
+        <p class="gr">νόστον πευσόμενον πατρὸς δὴν οἰχομένοιο</p>
+      </div>
+      <div class="verse">
+        <p class="ua">що давно відсутній! А цьому всьому заважають ахейці,</p>
+        <p class="num">265</p>
+        <p class="gr">ἔρχεσθαι· τὰ δὲ πάντα διατρίβουσιν Ἀχαιοί,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">а найбільше — женихи в зухвальстві лихому».</p>
+        <p class="num"></p>
+        <p class="gr">μνηστῆρες δὲ μάλιστα κακῶς ὑπερηνορέοντες.»</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">Так він молився. І близько підійшла Афіна,</p>
+        <p class="num"></p>
+        <p class="gr">ὣς ἔφατ᾽ εὐχόμενος, σχεδόθεν δέ οἱ ἦλθεν Ἀθήνη,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Ментора прибравши подобу — і постать, і голос, —</p>
+        <p class="num"></p>
+        <p class="gr">Μέντορι εἰδομένη ἠμὲν δέμας ἠδὲ καὶ αὐδήν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і, звертаючись, мовила до нього слова крилаті:</p>
+        <p class="num"></p>
+        <p class="gr">καί μιν φωνήσασ᾽ ἔπεα πτερόεντα προσηύδα·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Телемаху, не будеш ти надалі ні боягузом, ні нерозумним,</p>
+        <p class="num">270</p>
+        <p class="gr">«Τηλέμαχ᾽, οὐδ᾽ ὄπιθεν κακὸς ἔσσεαι οὐδ᾽ ἀνοήμων,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">якщо влита в тебе батьківська сила добра —</p>
+        <p class="num"></p>
+        <p class="gr">εἰ δή τοι σοῦ πατρὸς ἐνέστακται μένος ἠύ,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">такий-бо він був у слові й ділі!</p>
+        <p class="num"></p>
+        <p class="gr">οἷος κεῖνος ἔην τελέσαι ἔργον τε ἔπος τε·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Тож не буде дорога твоя ні марна, ні нездійсненна.</p>
+        <p class="num"></p>
+        <p class="gr">οὔ τοι ἔπειθ᾽ ἁλίη ὁδὸς ἔσσεται οὐδ᾽ ἀτέλεστος.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А якщо ти не його син і не Пенелопин —</p>
+        <p class="num"></p>
+        <p class="gr">εἰ δ᾽ οὐ κείνου γ᾽ ἐσσὶ γόνος καὶ Πηνελοπείης,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">тоді не сподіваюсь, що довершиш задумане.</p>
+        <p class="num">275</p>
+        <p class="gr">οὐ σέ γ᾽ ἔπειτα ἔολπα τελευτήσειν, ἃ μενοινᾷς.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Мало-бо дітей буває рівних батькові:</p>
+        <p class="num"></p>
+        <p class="gr">παῦροι γάρ τοι παῖδες ὁμοῖοι πατρὶ πέλονται,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">більшість — гірші, і лиш небагато кращих за батька.</p>
+        <p class="num"></p>
+        <p class="gr">οἱ πλέονες κακίους, παῦροι δέ τε πατρὸς ἀρείους.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Але ж ти не будеш ні боягузом, ні нерозумним,</p>
+        <p class="num"></p>
+        <p class="gr">ἀλλ᾽ ἐπεὶ οὐδ᾽ ὄπιθεν κακὸς ἔσσεαι οὐδ᾽ ἀνοήμων,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і мудрість Одіссеєва не зовсім тебе покинула, —</p>
+        <p class="num"></p>
+        <p class="gr">οὐδέ σε πάγχυ γε μῆτις Ὀδυσσῆος προλέλοιπεν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">тож є надія, що ти цю справу довершиш.</p>
+        <p class="num">280</p>
+        <p class="gr">ἐλπωρή τοι ἔπειτα τελευτῆσαι τάδε ἔργα.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Тому облиш женихів нерозумних — їхні задуми й наміри:</p>
+        <p class="num"></p>
+        <p class="gr">τῶ νῦν μνηστήρων μὲν ἔα βουλήν τε νόον τε</p>
+      </div>
+      <div class="verse">
+        <p class="ua">нема-бо в них ні розуму, ні правди,</p>
+        <p class="num"></p>
+        <p class="gr">ἀφραδέων, ἐπεὶ οὔ τι νοήμονες οὐδὲ δίκαιοι·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і не відають вони смерті й чорної долі,</p>
+        <p class="num"></p>
+        <p class="gr">οὐδέ τι ἴσασιν θάνατον καὶ κῆρα μέλαιναν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">що вже близько: в один день усім їм загинути.</p>
+        <p class="num"></p>
+        <p class="gr">ὃς δή σφι σχεδόν ἐστιν, ἐπ᾽ ἤματι πάντας ὀλέσθαι.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А дорога, якої ти прагнеш, недовго вже забариться:</p>
+        <p class="num">285</p>
+        <p class="gr">σοὶ δ᾽ ὁδὸς οὐκέτι δηρὸν ἀπέσσεται ἣν σὺ μενοινᾷς·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">такий-бо я тобі товариш батьківський —</p>
+        <p class="num"></p>
+        <p class="gr">τοῖος γάρ τοι ἑταῖρος ἐγὼ πατρώιός εἰμι,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">сам корабель швидкий споряджу й сам піду з тобою.</p>
+        <p class="num"></p>
+        <p class="gr">ὅς τοι νῆα θοὴν στελέω καὶ ἅμ᾽ ἕψομαι αὐτός.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Ти ж додому вертайся і побудь між женихами,</p>
+        <p class="num"></p>
+        <p class="gr">ἀλλὰ σὺ μὲν πρὸς δώματ᾽ ἰὼν μνηστῆρσιν ὁμίλει,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">та приготуй запаси, вклади все в посудини:</p>
+        <p class="num"></p>
+        <p class="gr">ὅπλισσόν τ᾽ ἤια καὶ ἄγγεσιν ἄρσον ἅπαντα,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">вино — в амфори, борошно, мозок мужів, —</p>
+        <p class="num">290</p>
+        <p class="gr">οἶνον ἐν ἀμφιφορεῦσι, καὶ ἄλφιτα, μυελὸν ἀνδρῶν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">у міхи щільні. А я по місту супутців</p>
+        <p class="num"></p>
+        <p class="gr">δέρμασιν ἐν πυκινοῖσιν· ἐγὼ δ᾽ ἀνὰ δῆμον ἑταίρους</p>
+      </div>
+      <div class="verse">
+        <p class="ua">охочих швидко зберу. Кораблів же багато</p>
+        <p class="num"></p>
+        <p class="gr">αἶψ᾽ ἐθελοντῆρας συλλέξομαι. εἰσὶ δὲ νῆες</p>
+      </div>
+      <div class="verse">
+        <p class="ua">на Ітаці морській — і нових, і старих:</p>
+        <p class="num"></p>
+        <p class="gr">πολλαὶ ἐν ἀμφιάλῳ Ἰθάκῃ, νέαι ἠδὲ παλαιαί·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">я нагледжу з-поміж них, котрий найкращий,</p>
+        <p class="num"></p>
+        <p class="gr">τάων μέν τοι ἐγὼν ἐπιόψομαι ἥ τις ἀρίστη,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і, швидко спорядивши, спустимо на широке море».</p>
+        <p class="num">295</p>
+        <p class="gr">ὦκα δ᾽ ἐφοπλίσσαντες ἐνήσομεν εὐρέι πόντῳ.»</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="kepkuvannia">
+    <h2>Антіной кепкує</h2>
+    <p class="lines-range">рядки 296–336</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Так мовила Афіна, Зевсова дочка. І довше</p>
+        <p class="num"></p>
+        <p class="gr">ὣς φάτ᾽ Ἀθηναίη κούρη Διός· οὐδ᾽ ἄρ᾽ ἔτι δὴν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Телемах не барився, почувши голос богині.</p>
+        <p class="num"></p>
+        <p class="gr">Τηλέμαχος παρέμιμνεν, ἐπεὶ θεοῦ ἔκλυεν αὐδήν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Рушив додому він із засмученим любим серцем</p>
+        <p class="num"></p>
+        <p class="gr">βῆ δ᾽ ἰέναι πρὸς δῶμα, φίλον τετιημένος ἦτορ,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і застав у покоях женихів зухвалих:</p>
+        <p class="num"></p>
+        <p class="gr">εὗρε δ᾽ ἄρα μνηστῆρας ἀγήνορας ἐν μεγάροισιν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">кіз вони білували й смалили свиней на подвір'ї.</p>
+        <p class="num">300</p>
+        <p class="gr">αἶγας ἀνιεμένους σιάλους θ᾽ εὕοντας ἐν αὐλῇ.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Антіной же, сміючись, підійшов до Телемаха,</p>
+        <p class="num"></p>
+        <p class="gr">Ἀντίνοος δ᾽ ἰθὺς γελάσας κίε Τηλεμάχοιο,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">вхопив його за руку, назвав на ім'я і мовив:</p>
+        <p class="num"></p>
+        <p class="gr">ἔν τ᾽ ἄρα οἱ φῦ χειρί, ἔπος τ᾽ ἔφατ᾽ ἔκ τ᾽ ὀνόμαζε·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Телемаху-красномовцю, нестримний у запалі! Хай ніщо</p>
+        <p class="num"></p>
+        <p class="gr">«Τηλέμαχ᾽ ὑψαγόρη, μένος ἄσχετε, μή τί τοι ἄλλο</p>
+      </div>
+      <div class="verse">
+        <p class="ua">інше не турбує твоїх грудей — ні діло лихе, ні слово:</p>
+        <p class="num"></p>
+        <p class="gr">ἐν στήθεσσι κακὸν μελέτω ἔργον τε ἔπος τε,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">їж собі й пий зі мною, як то було раніше.</p>
+        <p class="num">305</p>
+        <p class="gr">ἀλλά μοι ἐσθιέμεν καὶ πινέμεν, ὡς τὸ πάρος περ.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А все оте ахейці тобі напевно влаштують —</p>
+        <p class="num"></p>
+        <p class="gr">ταῦτα δέ τοι μάλα πάντα τελευτήσουσιν Ἀχαιοί,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">корабель і добірних веслярів, щоб швидше ти дістався</p>
+        <p class="num"></p>
+        <p class="gr">νῆα καὶ ἐξαίτους ἐρέτας, ἵνα θᾶσσον ἵκηαι</p>
+      </div>
+      <div class="verse">
+        <p class="ua">до Пілоса священного по чутку про славного батька».</p>
+        <p class="num"></p>
+        <p class="gr">ἐς Πύλον ἠγαθέην μετ᾽ ἀγαυοῦ πατρὸς ἀκουήν.»</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">Відповів йому на те Телемах розважливий:</p>
+        <p class="num"></p>
+        <p class="gr">τὸν δ᾽ αὖ Τηλέμαχος πεπνυμένος ἀντίον ηὔδα·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Антіною, ніяк не можна між вами, зухвальцями,</p>
+        <p class="num">310</p>
+        <p class="gr">«Ἀντίνο᾽, οὔ πως ἔστιν ὑπερφιάλοισι μεθ᾽ ὑμῖν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">мовчки бенкетувати і безтурботно веселитись.</p>
+        <p class="num"></p>
+        <p class="gr">δαίνυσθαί τ᾽ ἀκέοντα καὶ εὐφραίνεσθαι ἕκηλον.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Чи не досить, що досі ви нищили численні й добірні</p>
+        <p class="num"></p>
+        <p class="gr">ἦ οὐχ ἅλις ὡς τὸ πάροιθεν ἐκείρετε πολλὰ καὶ ἐσθλὰ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">статки мої, женихи, поки я був ще дитиною?</p>
+        <p class="num"></p>
+        <p class="gr">κτήματ᾽ ἐμά, μνηστῆρες, ἐγὼ δ᾽ ἔτι νήπιος ἦα;</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Тепер же, коли я вже виріс і, слухаючи інших,</p>
+        <p class="num"></p>
+        <p class="gr">νῦν δ᾽ ὅτε δὴ μέγας εἰμὶ καὶ ἄλλων μῦθον ἀκούων</p>
+      </div>
+      <div class="verse">
+        <p class="ua">розумію все — і дух у мені зростає, —</p>
+        <p class="num">315</p>
+        <p class="gr">πυνθάνομαι, καὶ δή μοι ἀέξεται ἔνδοθι θυμός,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">я спробую наслати на вас лихі кери загибелі,</p>
+        <p class="num"></p>
+        <p class="gr">πειρήσω, ὥς κ᾽ ὔμμι κακὰς ἐπὶ κῆρας ἰήλω,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">чи до Пілоса поїхавши, чи й тут, у цім краю.</p>
+        <p class="num"></p>
+        <p class="gr">ἠὲ Πύλονδ᾽ ἐλθών, ἢ αὐτοῦ τῷδ᾽ ἐνὶ δήμῳ.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А поїду я — і не марною буде дорога, про яку кажу, —</p>
+        <p class="num"></p>
+        <p class="gr">εἶμι μέν, οὐδ᾽ ἁλίη ὁδὸς ἔσσεται ἣν ἀγορεύω,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">хоч пасажиром: бо ж ні корабля мені не належить,</p>
+        <p class="num"></p>
+        <p class="gr">ἔμπορος· οὐ γὰρ νηὸς ἐπήβολος οὐδ᾽ ἐρετάων</p>
+      </div>
+      <div class="verse">
+        <p class="ua">ні веслярів. Так вам, певно, здалося вигідніше!»</p>
+        <p class="num">320</p>
+        <p class="gr">γίγνομαι· ὥς νύ που ὔμμιν ἐείσατο κέρδιον εἶναι.»</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">Мовив — і вирвав руку свою з руки Антіноя</p>
+        <p class="num"></p>
+        <p class="gr">ἦ ῥα, καὶ ἐκ χειρὸς χεῖρα σπάσατ᾽ Ἀντινόοιο</p>
+      </div>
+      <div class="verse">
+        <p class="ua">легко. А женихи бенкет готували в домі</p>
+        <p class="num"></p>
+        <p class="gr">ῥεῖα· μνηστῆρες δὲ δόμον κάτα δαῖτα πένοντο.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і глузували з нього, і кололи словами.</p>
+        <p class="num"></p>
+        <p class="gr">οἱ δ᾽ ἐπελώβευον καὶ ἐκερτόμεον ἐπέεσσιν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Так говорив дехто з юнаків зухвалих:</p>
+        <p class="num"></p>
+        <p class="gr">ὧδε δέ τις εἴπεσκε νέων ὑπερηνορεόντων·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Далебі, Телемах убивство нам замишляє!</p>
+        <p class="num">325</p>
+        <p class="gr">«ἦ μάλα Τηλέμαχος φόνον ἡμῖν μερμηρίζει.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Чи оборонців привезе з Пілоса піщаного,</p>
+        <p class="num"></p>
+        <p class="gr">ἤ τινας ἐκ Πύλου ἄξει ἀμύντορας ἠμαθόεντος</p>
+      </div>
+      <div class="verse">
+        <p class="ua">чи аж зі Спарти — так-бо страшенно він рветься!</p>
+        <p class="num"></p>
+        <p class="gr">ἢ ὅ γε καὶ Σπάρτηθεν, ἐπεί νύ περ ἵεται αἰνῶς·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А може, й до Ефіри схоче, до ниви родючої,</p>
+        <p class="num"></p>
+        <p class="gr">ἠὲ καὶ εἰς Ἐφύρην ἐθέλει, πίειραν ἄρουραν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">дістатись, щоб звідти отрути смертельної привезти,</p>
+        <p class="num"></p>
+        <p class="gr">ἐλθεῖν, ὄφρ᾽ ἔνθεν θυμοφθόρα φάρμακ᾽ ἐνείκῃ,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">вкинути в кратер — і всіх нас разом погубити».</p>
+        <p class="num">330</p>
+        <p class="gr">ἐν δὲ βάλῃ κρητῆρι καὶ ἡμέας πάντας ὀλέσσῃ.»</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">А інший знову казав з юнаків зухвалих:</p>
+        <p class="num"></p>
+        <p class="gr">ἄλλος δ᾽ αὖτ᾽ εἴπεσκε νέων ὑπερηνορεόντων·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Хтозна — може, й сам він, на судні крутобокім</p>
+        <p class="num"></p>
+        <p class="gr">«τίς δ᾽ οἶδ᾽, εἴ κε καὶ αὐτὸς ἰὼν κοίλης ἐπὶ νηὸς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">відпливши, далеко від рідних загине в блуканнях, як Одіссей?</p>
+        <p class="num"></p>
+        <p class="gr">τῆλε φίλων ἀπόληται ἀλώμενος ὥς περ Ὀδυσσεύς;</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Тоді нам іще більше додалося б клопоту:</p>
+        <p class="num"></p>
+        <p class="gr">οὕτω κεν καὶ μᾶλλον ὀφέλλειεν πόνον ἄμμιν·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">все-бо майно ми ділили б між собою, а дім</p>
+        <p class="num">335</p>
+        <p class="gr">κτήματα γάρ κεν πάντα δασαίμεθα, οἰκία δ᾽ αὖτε</p>
+      </div>
+      <div class="verse">
+        <p class="ua">віддали б його матері — і тому, хто її візьме».</p>
+        <p class="num"></p>
+        <p class="gr">τούτου μητέρι δοῖμεν ἔχειν ἠδ᾽ ὅς τις ὀπυίοι.»</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="komora">
+    <h2>Комора Евріклеї</h2>
+    <p class="lines-range">рядки 337–360</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Так вони мовили. А він зійшов у батькову комору,</p>
+        <p class="num"></p>
+        <p class="gr">ὣς φάν, ὁ δ᾽ ὑψόροφον θάλαμον κατεβήσετο πατρὸς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">простору, з високою стелею, де золото лежало й мідь,</p>
+        <p class="num"></p>
+        <p class="gr">εὐρύν, ὅθι νητὸς χρυσὸς καὶ χαλκὸς ἔκειτο</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і одяг у скринях, і запашної оливи вдосталь;</p>
+        <p class="num"></p>
+        <p class="gr">ἐσθής τ᾽ ἐν χηλοῖσιν ἅλις τ᾽ ἐυῶδες ἔλαιον·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">там і піфоси вина старого, солодкого</p>
+        <p class="num">340</p>
+        <p class="gr">ἐν δὲ πίθοι οἴνοιο παλαιοῦ ἡδυπότοιο</p>
+      </div>
+      <div class="verse">
+        <p class="ua">стояли, божистий трунок нерозведений тримаючи,</p>
+        <p class="num"></p>
+        <p class="gr">ἕστασαν, ἄκρητον θεῖον ποτὸν ἐντὸς ἔχοντες,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">рядком попід стіною вишикувані, — якщо Одіссей</p>
+        <p class="num"></p>
+        <p class="gr">ἑξείης ποτὶ τοῖχον ἀρηρότες, εἴ ποτ᾽ Ὀδυσσεὺς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">колись додому вернеться, і безліч мук перетерпівши.</p>
+        <p class="num"></p>
+        <p class="gr">οἴκαδε νοστήσειε καὶ ἄλγεα πολλὰ μογήσας.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Замкнені там були двері, щільно припасовані,</p>
+        <p class="num"></p>
+        <p class="gr">κληισταὶ δ᾽ ἔπεσαν σανίδες πυκινῶς ἀραρυῖαι,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">двостулкові; і жінка-ключниця днями й ночами</p>
+        <p class="num">345</p>
+        <p class="gr">δικλίδες· ἐν δὲ γυνὴ ταμίη νύκτας τε καὶ ἦμαρ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">там пильнувала, все стережучи мудрістю розуму, —</p>
+        <p class="num"></p>
+        <p class="gr">ἔσχ᾽, ἣ πάντ᾽ ἐφύλασσε νόου πολυϊδρείῃσιν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Евріклея, дочка Опа, сина Пейсенора.</p>
+        <p class="num"></p>
+        <p class="gr">Εὐρύκλει᾽, Ὦπος θυγάτηρ Πεισηνορίδαο.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Її покликавши в комору, Телемах промовив:</p>
+        <p class="num"></p>
+        <p class="gr">τὴν τότε Τηλέμαχος προσέφη θαλαμόνδε καλέσσας·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Нянечко, наточи-но мені в амфори вина</p>
+        <p class="num"></p>
+        <p class="gr">«μαῖ᾽, ἄγε δή μοι οἶνον ἐν ἀμφιφορεῦσιν ἄφυσσον</p>
+      </div>
+      <div class="verse">
+        <p class="ua">солодкого, найсмачнішого після того, що ти бережеш</p>
+        <p class="num">350</p>
+        <p class="gr">ἡδύν, ὅτις μετὰ τὸν λαρώτατος ὃν σὺ φυλάσσεις</p>
+      </div>
+      <div class="verse">
+        <p class="ua">для нього, нещасного, — все виглядаючи, чи не прийде</p>
+        <p class="num"></p>
+        <p class="gr">κεῖνον ὀιομένη τὸν κάμμορον, εἴ ποθεν ἔλθοι</p>
+      </div>
+      <div class="verse">
+        <p class="ua">паросток Зевсів, Одіссей, смерті й кер уникнувши.</p>
+        <p class="num"></p>
+        <p class="gr">διογενὴς Ὀδυσεὺς θάνατον καὶ κῆρας ἀλύξας.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Дванадцять наповни і накривками щільно закрий.</p>
+        <p class="num"></p>
+        <p class="gr">δώδεκα δ᾽ ἔμπλησον καὶ πώμασιν ἄρσον ἅπαντας.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">І борошна насип мені в міхи міцно зшиті —</p>
+        <p class="num"></p>
+        <p class="gr">ἐν δέ μοι ἄλφιτα χεῦον ἐϋρραφέεσσι δοροῖσιν·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">двадцять мірок хай буде борошна млинового.</p>
+        <p class="num">355</p>
+        <p class="gr">εἴκοσι δ᾽ ἔστω μέτρα μυληφάτου ἀλφίτου ἀκτῆς.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Але знай про це сама лиш. Хай буде все зібране разом:</p>
+        <p class="num"></p>
+        <p class="gr">αὐτὴ δ᾽ οἴη ἴσθι· τὰ δ᾽ ἁθρόα πάντα τετύχθω·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">увечері я заберу його, щойно мати</p>
+        <p class="num"></p>
+        <p class="gr">ἑσπέριος γὰρ ἐγὼν αἱρήσομαι, ὁππότε κεν δὴ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">до верхніх покоїв зійде, про сон подбавши.</p>
+        <p class="num"></p>
+        <p class="gr">μήτηρ εἰς ὑπερῷ᾽ ἀναβῇ κοίτου τε μέδηται.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Вирушаю-бо я в Спарту й до Пілоса піщаного —</p>
+        <p class="num"></p>
+        <p class="gr">εἶμι γὰρ ἐς Σπάρτην τε καὶ ἐς Πύλον ἠμαθόεντα</p>
+      </div>
+      <div class="verse">
+        <p class="ua">розпитати про повернення любого батька: може, почую щось».</p>
+        <p class="num">360</p>
+        <p class="gr">νόστον πευσόμενος πατρὸς φίλου, ἤν που ἀκούσω.»</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="kliatva">
+    <h2>Клятва няньки</h2>
+    <p class="lines-range">рядки 361–381</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Так він сказав. І заголосила люба нянька Евріклея,</p>
+        <p class="num"></p>
+        <p class="gr">ὣς φάτο, κώκυσεν δὲ φίλη τροφὸς Εὐρύκλεια,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і, ридаючи, мовила до нього слова крилаті:</p>
+        <p class="num"></p>
+        <p class="gr">καί ῥ᾽ ὀλοφυρομένη ἔπεα πτερόεντα προσηύδα·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Звідки ж, любе дитя, така думка в серці твоїм</p>
+        <p class="num"></p>
+        <p class="gr">«τίπτε δέ τοι, φίλε τέκνον, ἐνὶ φρεσὶ τοῦτο νόημα</p>
+      </div>
+      <div class="verse">
+        <p class="ua">узялась? Куди ти зібрався йти по світу широкому,</p>
+        <p class="num"></p>
+        <p class="gr">ἔπλετο; πῇ δ᾽ ἐθέλεις ἰέναι πολλὴν ἐπὶ γαῖαν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">один-єдиний, укоханий? Він же загинув далеко від дому —</p>
+        <p class="num">365</p>
+        <p class="gr">μοῦνος ἐὼν ἀγαπητός; ὁ δ᾽ ὤλετο τηλόθι πάτρης</p>
+      </div>
+      <div class="verse">
+        <p class="ua">паросток Зевсів, Одіссей, у чужім невідомім краю!</p>
+        <p class="num"></p>
+        <p class="gr">διογενὴς Ὀδυσεὺς ἀλλογνώτῳ ἐνὶ δήμῳ.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А ці, щойно ти підеш, лихе замислять услід,</p>
+        <p class="num"></p>
+        <p class="gr">οἱ δέ τοι αὐτίκ᾽ ἰόντι κακὰ φράσσονται ὀπίσσω,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">щоб ти від підступу згинув, — і все це самі поділять.</p>
+        <p class="num"></p>
+        <p class="gr">ὥς κε δόλῳ φθίῃς, τάδε δ᾽ αὐτοὶ πάντα δάσονται.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Залишся тут, при своєму! Нащо тобі</p>
+        <p class="num"></p>
+        <p class="gr">ἀλλὰ μέν᾽ αὖθ᾽ ἐπὶ σοῖσι καθήμενος· οὐδέ τί σε χρὴ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">по морю пустинному біду терпіти і блукати?»</p>
+        <p class="num">370</p>
+        <p class="gr">πόντον ἐπ᾽ ἀτρύγετον κακὰ πάσχειν οὐδ᾽ ἀλάλησθαι.»</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">Відповів їй на те Телемах розважливий:</p>
+        <p class="num"></p>
+        <p class="gr">τὴν δ᾽ αὖ Τηλέμαχος πεπνυμένος ἀντίον ηὔδα·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Не бійся, нянечко: не без волі бога цей задум.</p>
+        <p class="num"></p>
+        <p class="gr">«θάρσει, μαῖ᾽, ἐπεὶ οὔ τοι ἄνευ θεοῦ ἥδε γε βουλή.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Але поклянись, що любій матері не скажеш,</p>
+        <p class="num"></p>
+        <p class="gr">ἀλλ᾽ ὄμοσον μὴ μητρὶ φίλῃ τάδε μυθήσασθαι,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">аж поки одинадцятий чи дванадцятий день не мине,</p>
+        <p class="num"></p>
+        <p class="gr">πρίν γ᾽ ὅτ᾽ ἂν ἑνδεκάτη τε δυωδεκάτη τε γένηται,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">або поки сама не спохопиться й не почує, що я відплив, —</p>
+        <p class="num">375</p>
+        <p class="gr">ἢ αὐτὴν ποθέσαι καὶ ἀφορμηθέντος ἀκοῦσαι,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">щоб не нівечила плачем прекрасного лиця».</p>
+        <p class="num"></p>
+        <p class="gr">ὡς ἂν μὴ κλαίουσα κατὰ χρόα καλὸν ἰάπτῃ.»</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">Так він сказав — і стара великою клятвою богів заприсяглась.</p>
+        <p class="num"></p>
+        <p class="gr">ὣς ἄρ᾽ ἔφη, γρῆυς δὲ θεῶν μέγαν ὅρκον ἀπώμνυ.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А коли поклялася і клятву завершила,</p>
+        <p class="num"></p>
+        <p class="gr">αὐτὰρ ἐπεί ῥ᾽ ὄμοσέν τε τελεύτησέν τε τὸν ὅρκον,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">одразу ж наточила йому в амфори вина</p>
+        <p class="num"></p>
+        <p class="gr">αὐτίκ᾽ ἔπειτά οἱ οἶνον ἐν ἀμφιφορεῦσιν ἄφυσσεν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і борошна насипала в міхи міцно зшиті.</p>
+        <p class="num">380</p>
+        <p class="gr">ἐν δέ οἱ ἄλφιτα χεῦεν ἐϋρραφέεσσι δοροῖσι.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Телемах же вернувсь у покої і був між женихами.</p>
+        <p class="num"></p>
+        <p class="gr">Τηλέμαχος δ᾽ ἐς δώματ᾽ ἰὼν μνηστῆρσιν ὁμίλει.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="son">
+    <h2>Сон від Афіни</h2>
+    <p class="lines-range">рядки 382–404</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Тоді інше замислила ясноока богиня Афіна:</p>
+        <p class="num"></p>
+        <p class="gr">ἔνθ᾽ αὖτ᾽ ἄλλ᾽ ἐνόησε θεά, γλαυκῶπις Ἀθήνη.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Телемахову подобу прибравши, пішла вона містом усюди,</p>
+        <p class="num"></p>
+        <p class="gr">Τηλεμάχῳ ἐικυῖα κατὰ πτόλιν ᾤχετο πάντῃ,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">до кожного мужа підходила і мовила слово —</p>
+        <p class="num"></p>
+        <p class="gr">καί ῥα ἑκάστῳ φωτὶ παρισταμένη φάτο μῦθον,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">увечері збиратись біля корабля швидкого веліла.</p>
+        <p class="num">385</p>
+        <p class="gr">ἑσπερίους δ᾽ ἐπὶ νῆα θοὴν ἀγέρεσθαι ἀνώγει.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А потім у Ноемона, славного сина Фронія,</p>
+        <p class="num"></p>
+        <p class="gr">ἡ δ᾽ αὖτε Φρονίοιο Νοήμονα φαίδιμον υἱὸν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">попросила корабель швидкий — і той радо пообіцяв.</p>
+        <p class="num"></p>
+        <p class="gr">ᾔτεε νῆα θοήν· ὁ δέ οἱ πρόφρων ὑπέδεκτο.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Сіло сонце, і тінями вкрилися всі вулиці.</p>
+        <p class="num"></p>
+        <p class="gr">δύσετό τ᾽ ἠέλιος σκιόωντό τε πᾶσαι ἀγυιαί,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Тоді спустила вона корабель на море, склала в нього</p>
+        <p class="num"></p>
+        <p class="gr">καὶ τότε νῆα θοὴν ἅλαδ᾽ εἴρυσε, πάντα δ᾽ ἐν αὐτῇ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">все спорядження, що добропалубні судна носять,</p>
+        <p class="num">390</p>
+        <p class="gr">ὅπλ᾽ ἐτίθει, τά τε νῆες ἐύσσελμοι φορέουσι.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і поставила його край гавані. Довкола добірні супутці</p>
+        <p class="num"></p>
+        <p class="gr">στῆσε δ᾽ ἐπ᾽ ἐσχατιῇ λιμένος, περὶ δ᾽ ἐσθλοὶ ἑταῖροι</p>
+      </div>
+      <div class="verse">
+        <p class="ua">гуртом зібралися, і богиня підбадьорила кожного.</p>
+        <p class="num"></p>
+        <p class="gr">ἁθρόοι ἠγερέθοντο· θεὰ δ᾽ ὤτρυνεν ἕκαστον.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Тоді ще інше замислила ясноока богиня Афіна:</p>
+        <p class="num"></p>
+        <p class="gr">ἔνθ᾽ αὖτ᾽ ἄλλ᾽ ἐνόησε θεά, γλαυκῶπις Ἀθήνη.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">рушила до покоїв божистого Одіссея</p>
+        <p class="num"></p>
+        <p class="gr">βῆ ῤ᾽ ἰέναι πρὸς δώματ᾽ Ὀδυσσῆος θείοιο·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і там на женихів солодкий сон пролила,</p>
+        <p class="num">395</p>
+        <p class="gr">ἔνθα μνηστήρεσσιν ἐπὶ γλυκὺν ὕπνον ἔχευε,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">п'яних заплутала — і кубки з рук повипадали.</p>
+        <p class="num"></p>
+        <p class="gr">πλάζε δὲ πίνοντας, χειρῶν δ᾽ ἔκβαλλε κύπελλα.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Спати вони подалися містом і довше вже</p>
+        <p class="num"></p>
+        <p class="gr">οἱ δ᾽ εὕδειν ὤρνυντο κατὰ πτόλιν, οὐδ᾽ ἄρ᾽ ἔτι δὴν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">не сиділи: сон-бо їм упав на повіки.</p>
+        <p class="num"></p>
+        <p class="gr">ἥατ᾽, ἐπεί σφισιν ὕπνος ἐπὶ βλεφάροισιν ἔπιπτεν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А Телемахові мовила ясноока Афіна,</p>
+        <p class="num"></p>
+        <p class="gr">αὐτὰρ Τηλέμαχον προσέφη γλαυκῶπις Ἀθήνη</p>
+      </div>
+      <div class="verse">
+        <p class="ua">з покоїв затишних його викликавши,</p>
+        <p class="num">400</p>
+        <p class="gr">ἐκπροκαλεσσαμένη μεγάρων ἐὺ ναιεταόντων,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Ментора прибравши подобу — і постать, і голос:</p>
+        <p class="num"></p>
+        <p class="gr">Μέντορι εἰδομένη ἠμὲν δέμας ἠδὲ καὶ αὐδήν·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Телемаху, вже твої супутці в наголінниках мідних</p>
+        <p class="num"></p>
+        <p class="gr">«Τηλέμαχ᾽, ἤδη μέν τοι ἐυκνήμιδες ἑταῖροι</p>
+      </div>
+      <div class="verse">
+        <p class="ua">сидять при веслах, твого виходу чекаючи.</p>
+        <p class="num"></p>
+        <p class="gr">ἥατ᾽ ἐπήρετμοι τὴν σὴν ποτιδέγμενοι ὁρμήν·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Тож ходімо, не гаймо довго дороги!»</p>
+        <p class="num"></p>
+        <p class="gr">ἀλλ᾽ ἴομεν, μὴ δηθὰ διατρίβωμεν ὁδοῖο.»</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="vidplyttia">
+    <h2>Нічне відплиття</h2>
+    <p class="lines-range">рядки 405–434</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Так промовивши, повела Паллада Афіна</p>
+        <p class="num">405</p>
+        <p class="gr">ὣς ἄρα φωνήσασ᾽ ἡγήσατο Παλλὰς Ἀθήνη</p>
+      </div>
+      <div class="verse">
+        <p class="ua">швидко — а він ступав у сліди богині.</p>
+        <p class="num"></p>
+        <p class="gr">καρπαλίμως· ὁ δ᾽ ἔπειτα μετ᾽ ἴχνια βαῖνε θεοῖο.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Коли ж зійшли вони до корабля і моря,</p>
+        <p class="num"></p>
+        <p class="gr">αὐτὰρ ἐπεί ῥ᾽ ἐπὶ νῆα κατήλυθον ἠδὲ θάλασσαν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">то на березі застали довговолосих супутців.</p>
+        <p class="num"></p>
+        <p class="gr">εὗρον ἔπειτ᾽ ἐπὶ θινὶ κάρη κομόωντας ἑταίρους.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">До них промовила священна сила Телемахова:</p>
+        <p class="num"></p>
+        <p class="gr">τοῖσι δὲ καὶ μετέειφ᾽ ἱερὴ ἲς Τηλεμάχοιο·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Нумо, друзі, запаси принесімо: все вже</p>
+        <p class="num">410</p>
+        <p class="gr">«δεῦτε, φίλοι, ἤια φερώμεθα· πάντα γὰρ ἤδη</p>
+      </div>
+      <div class="verse">
+        <p class="ua">зібране в домі. Мати моя нічого не знає,</p>
+        <p class="num"></p>
+        <p class="gr">ἁθρό᾽ ἐνὶ μεγάρῳ. μήτηρ δ᾽ ἐμὴ οὔ τι πέπυσται,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">ані інші служниці — одна лиш слово чула».</p>
+        <p class="num"></p>
+        <p class="gr">οὐδ᾽ ἄλλαι δμωαί, μία δ᾽ οἴη μῦθον ἄκουσεν.»</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">Так промовивши, повів — і рушили вони слідом.</p>
+        <p class="num"></p>
+        <p class="gr">ὣς ἄρα φωνήσας ἡγήσατο, τοὶ δ᾽ ἅμ᾽ ἕποντο.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Все принісши, на добропалубнім судні</p>
+        <p class="num"></p>
+        <p class="gr">οἱ δ᾽ ἄρα πάντα φέροντες ἐυσσέλμῳ ἐπὶ νηὶ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">склали, як звелів любий син Одіссеїв.</p>
+        <p class="num">415</p>
+        <p class="gr">κάτθεσαν, ὡς ἐκέλευσεν Ὀδυσσῆος φίλος υἱός.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Зійшов на корабель Телемах — а попереду Афіна:</p>
+        <p class="num"></p>
+        <p class="gr">ἂν δ᾽ ἄρα Τηλέμαχος νηὸς βαῖν᾽, ἦρχε δ᾽ Ἀθήνη,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">на кормі корабельній сіла вона, і поруч</p>
+        <p class="num"></p>
+        <p class="gr">νηὶ δ᾽ ἐνὶ πρυμνῇ κατ᾽ ἄρ᾽ ἕζετο· ἄγχι δ᾽ ἄρ᾽ αὐτῆς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">сів Телемах. Супутці причали відв'язали,</p>
+        <p class="num"></p>
+        <p class="gr">ἕζετο Τηλέμαχος. τοὶ δὲ πρυμνήσι᾽ ἔλυσαν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">самі зійшли на борт і сіли при кочетах.</p>
+        <p class="num"></p>
+        <p class="gr">ἂν δὲ καὶ αὐτοὶ βάντες ἐπὶ κληῖσι καθῖζον.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Попутний вітер послала їм ясноока Афіна —</p>
+        <p class="num">420</p>
+        <p class="gr">τοῖσιν δ᾽ ἴκμενον οὖρον ἵει γλαυκῶπις Ἀθήνη,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">стрімкий Зефір, що дзвенить над винно-темним морем.</p>
+        <p class="num"></p>
+        <p class="gr">ἀκραῆ Ζέφυρον, κελάδοντ᾽ ἐπὶ οἴνοπα πόντον.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Телемах же, підбадьорюючи супутців, звелів</p>
+        <p class="num"></p>
+        <p class="gr">Τηλέμαχος δ᾽ ἑτάροισιν ἐποτρύνας ἐκέλευσεν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">до снастей братися — і вони послухали заклику:</p>
+        <p class="num"></p>
+        <p class="gr">ὅπλων ἅπτεσθαι· τοὶ δ᾽ ὀτρύνοντος ἄκουσαν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">щоглу соснову в гніздо посередині</p>
+        <p class="num"></p>
+        <p class="gr">ἱστὸν δ᾽ εἰλάτινον κοίλης ἔντοσθε μεσόδμης</p>
+      </div>
+      <div class="verse">
+        <p class="ua">поставили, піднявши, і линвами до носа прикріпили,</p>
+        <p class="num">425</p>
+        <p class="gr">στῆσαν ἀείραντες, κατὰ δὲ προτόνοισιν ἔδησαν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і білі вітрила натягли ремінням крученим.</p>
+        <p class="num"></p>
+        <p class="gr">ἕλκον δ᾽ ἱστία λευκὰ ἐυστρέπτοισι βοεῦσιν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Вітер надув середину вітрила, і хвиля</p>
+        <p class="num"></p>
+        <p class="gr">ἔπρησεν δ᾽ ἄνεμος μέσον ἱστίον, ἀμφὶ δὲ κῦμα</p>
+      </div>
+      <div class="verse">
+        <p class="ua">пурпурова круг кіля гучно шуміла в бігу корабля —</p>
+        <p class="num"></p>
+        <p class="gr">στείρῃ πορφύρεον μεγάλ᾽ ἴαχε νηὸς ἰούσης·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">а він летів по хвилі, дорогу свою верстаючи.</p>
+        <p class="num"></p>
+        <p class="gr">ἡ δ᾽ ἔθεεν κατὰ κῦμα διαπρήσσουσα κέλευθον.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Снасті кріпко зв'язавши на чорнім судні швидкім,</p>
+        <p class="num">430</p>
+        <p class="gr">δησάμενοι δ᾽ ἄρα ὅπλα θοὴν ἀνὰ νῆα μέλαιναν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">вони поставили кратери, повні вина по вінця,</p>
+        <p class="num"></p>
+        <p class="gr">στήσαντο κρητῆρας ἐπιστεφέας οἴνοιο,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і лили узливання безсмертним богам вічносущим,</p>
+        <p class="num"></p>
+        <p class="gr">λεῖβον δ᾽ ἀθανάτοισι θεοῖς αἰειγενέτῃσιν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">а з усіх найбільше — Зевсовій ясноокій дочці.</p>
+        <p class="num"></p>
+        <p class="gr">ἐκ πάντων δὲ μάλιστα Διὸς γλαυκώπιδι κούρῃ.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Цілу ж ніч і крізь ранок корабель верстав дорогу.</p>
+        <p class="num"></p>
+        <p class="gr">παννυχίη μέν ῥ᾽ ἥ γε καὶ ἠῶ πεῖρε κέλευθον.</p>
+      </div>
+    </div>
+  </section>
+
+  <nav class="booknav" aria-label="Пісні">
+    <a href="pisnia-1.html">← Пісня I</a>
+    <a href="index.html">Зміст</a>
+    <a href="pisnia-3.html">Пісня III →</a>
+  </nav>
+</main>
+
+<nav class="pagenav bottom" aria-label="Розділи (внизу)">
+  <button class="navarrow nav-prev" aria-label="Попередній розділ">←</button>
+  <select class="chapselect" aria-label="Перейти до розділу">
+    <option value="rada2">Рада ітакійців</option>
+    <option value="iehyptiy">Слово Єгиптія</option>
+    <option value="promova">Промова Телемаха</option>
+    <option value="polotno">Пенелопине полотно</option>
+    <option value="orly">Зевсові орли</option>
+    <option value="evrimah2">Зухвальство Еврімаха</option>
+    <option value="prohannia">Прохання Телемаха</option>
+    <option value="mentor">Докір Ментора</option>
+    <option value="leokrit">Глум Леокріта</option>
+    <option value="molytva">Молитва біля моря</option>
+    <option value="kepkuvannia">Антіной кепкує</option>
+    <option value="komora">Комора Евріклеї</option>
+    <option value="kliatva">Клятва няньки</option>
+    <option value="son">Сон від Афіни</option>
+    <option value="vidplyttia">Нічне відплиття</option>
+  </select>
+  <button class="navarrow nav-next" aria-label="Наступний розділ">→</button>
+</nav>
+
+<div class="fabs">
+  <button class="fab" id="fabUp" aria-label="Догори">↑</button>
+  <button class="fab" id="fabDown" aria-label="Додолу">↓</button>
+</div>
+
+<div style="padding:2.5rem 0;background:var(--papyrus)"><div class="meander" role="presentation"></div></div>
+
+<footer>
+  <p class="fgreek">οἶνοψ πόντος — винно-темне море</p>
+  <p>Переклад з давньогрецької: Hardex &amp; Claude (Anthropic), 2026.</p>
+  <p>Оригінальний текст Гомера — у суспільному надбанні.</p>
+</footer>
+
+<script>
+  const btn = document.getElementById('grToggle');
+  const content = document.getElementById('content');
+  const POS_KEY = 'odysseia-pos-p2';
+  const GR_KEY = 'odysseia-greek';
+
+  try { localStorage.setItem('odysseia-last', location.pathname.split('/').pop() || 'index.html'); } catch(e){}
+
+  function setGreek(on){
+    content.classList.toggle('show-greek', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.textContent = on ? 'Сховати оригінал' : 'Показати оригінал';
+  }
+  btn.addEventListener('click', () => {
+    const on = !content.classList.contains('show-greek');
+    setGreek(on);
+    try { localStorage.setItem(GR_KEY, on ? '1' : '0'); } catch(e){}
+  });
+
+  document.getElementById('fabUp').addEventListener('click', () =>
+    window.scrollTo({top:0, behavior:'smooth'}));
+  document.getElementById('fabDown').addEventListener('click', () =>
+    window.scrollTo({top:document.documentElement.scrollHeight, behavior:'smooth'}));
+
+  const sections = Array.from(document.querySelectorAll('main section'));
+  const selects = Array.from(document.querySelectorAll('.chapselect'));
+  const prevBtns = Array.from(document.querySelectorAll('.nav-prev'));
+  const nextBtns = Array.from(document.querySelectorAll('.nav-next'));
+
+  function currentIndex(){
+    const mark = window.scrollY + window.innerHeight * 0.3;
+    let idx = 0;
+    sections.forEach((s, i) => { if (s.offsetTop <= mark) idx = i; });
+    return idx;
+  }
+  function goTo(i){
+    if (i < 0 || i >= sections.length) return;
+    sections[i].scrollIntoView({behavior:'smooth'});
+  }
+  function syncNav(){
+    const i = currentIndex();
+    selects.forEach(s => s.value = sections[i].id);
+    prevBtns.forEach(b => b.disabled = (i === 0));
+    nextBtns.forEach(b => b.disabled = (i === sections.length - 1));
+  }
+  prevBtns.forEach(b => b.addEventListener('click', () => goTo(currentIndex() - 1)));
+  nextBtns.forEach(b => b.addEventListener('click', () => goTo(currentIndex() + 1)));
+  selects.forEach(s => s.addEventListener('change', () => {
+    const el = document.getElementById(s.value);
+    if (el) el.scrollIntoView({behavior:'smooth'});
+  }));
+
+  window.addEventListener('load', () => {
+    try {
+      if (localStorage.getItem(GR_KEY) === '1') setGreek(true);
+      const pos = localStorage.getItem(POS_KEY);
+      if (pos) window.scrollTo(0, parseInt(pos, 10) || 0);
+    } catch(e){}
+    syncNav();
+  });
+
+  let saveTimer;
+  window.addEventListener('scroll', () => {
+    syncNav();
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      try { localStorage.setItem(POS_KEY, String(window.scrollY)); } catch(e){}
+    }, 200);
+  }, {passive:true});
+</script>
+
+</body>
+</html>
