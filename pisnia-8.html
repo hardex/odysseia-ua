@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Одіссея — новий український переклад</title>
+<meta name="description" content="Новий український переклад «Одіссеї» Гомера з давньогрецького оригіналу.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sea:#1a2733;
+    --sea-deep:#131d27;
+    --ink:#28221a;
+    --papyrus:#f1e9d6;
+    --papyrus-dim:#e7dcc3;
+    --gold:#c69a3f;
+    --clay:#9c5b3f;
+    --mist:#ece4d2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    font-family:'Alegreya', Georgia, serif;
+    background:var(--papyrus);
+    color:var(--ink);
+    line-height:1.6;
+  }
+  a{color:var(--clay)}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+  .hero{
+    background:linear-gradient(180deg, var(--sea) 0%, var(--sea-deep) 100%);
+    color:var(--mist);
+    text-align:center;
+    padding:5.5rem 1.5rem 4.5rem;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .greek-epigraph{
+    font-style:italic;
+    color:var(--gold);
+    letter-spacing:.06em;
+    font-size:1.05rem;
+    opacity:.9;
+  }
+  .hero h1{
+    font-family:'Forum', serif;
+    font-weight:400;
+    font-size:clamp(3.2rem, 10vw, 6.5rem);
+    letter-spacing:.12em;
+    margin:.4rem 0 .2rem;
+    color:var(--mist);
+  }
+  .hero .subtitle{
+    font-family:'Alegreya Sans', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.28em;
+    font-size:.85rem;
+    color:var(--gold);
+    margin-top:.6rem;
+  }
+  .hero .authors{
+    font-family:'Alegreya Sans', sans-serif;
+    font-size:.95rem;
+    letter-spacing:.06em;
+    color:var(--gold);
+    margin-top:1.6rem;
+  }
+  .hero .authors strong{font-weight:500}
+  .hero::after{
+    content:"";
+    position:absolute;left:0;right:0;bottom:-1px;height:22px;
+    background:
+      radial-gradient(circle at 12px -6px, transparent 14px, var(--papyrus) 15px);
+    background-size:24px 22px;
+    background-repeat:repeat-x;
+  }
+
+  .meander{
+    height:14px;
+    max-width:16rem;
+    margin:0 auto;
+    background:
+      repeating-linear-gradient(90deg,
+        var(--gold) 0 2px, transparent 2px 8px,
+        var(--gold) 8px 10px, transparent 10px 16px);
+    border-top:2px solid var(--gold);
+    border-bottom:2px solid var(--gold);
+    opacity:.75;
+  }
+
+  main{max-width:44rem;margin:0 auto;padding:3.5rem 1.5rem 4rem}
+  .book-label{
+    font-family:'Alegreya Sans', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.24em;
+    font-size:.8rem;
+    color:var(--clay);
+    text-align:center;
+  }
+  h2{
+    font-family:'Forum', serif;
+    font-weight:400;
+    font-size:2rem;
+    text-align:center;
+    letter-spacing:.05em;
+    margin:.4rem 0 .3rem;
+  }
+  section + section h2{margin-top:3.2rem}
+  .lines-range{
+    text-align:center;
+    font-style:italic;
+    color:#6e6350;
+    margin-bottom:1.8rem;
+  }
+
+  .toggle-wrap{text-align:center;margin:1.6rem 0 2.4rem}
+  .toggle{
+    font-family:'Alegreya Sans', sans-serif;
+    font-size:.9rem;
+    letter-spacing:.08em;
+    background:transparent;
+    color:var(--clay);
+    border:1.5px solid var(--clay);
+    border-radius:2rem;
+    padding:.55rem 1.4rem;
+    cursor:pointer;
+    transition:background .2s, color .2s;
+  }
+  .toggle:hover{background:var(--clay);color:var(--papyrus)}
+  .toggle[aria-pressed="true"]{background:var(--clay);color:var(--papyrus)}
+
+  .poem{
+    font-size:1.18rem;
+    line-height:1.85;
+  }
+  .verse{
+    display:grid;
+    grid-template-columns:1fr 2.6rem;
+    column-gap:.8rem;
+    align-items:baseline;
+  }
+  .verse .ua{grid-column:1}
+  .verse .num{
+    grid-column:2;
+    font-family:'Alegreya Sans', sans-serif;
+    font-size:.75rem;
+    color:#a3947a;
+    text-align:left;
+    user-select:none;
+  }
+  .verse .gr{
+    grid-column:1 / -1;
+    font-style:italic;
+    color:#7d6f57;
+    font-size:1rem;
+    line-height:1.5;
+    padding:.1rem 0 .55rem 1.2rem;
+    border-left:2px solid var(--papyrus-dim);
+    display:none;
+  }
+  .show-greek .gr{display:block}
+  .stanza-break{height:1.1rem}
+  .drop::first-letter{
+    font-family:'Forum', serif;
+    font-size:3.4em;
+    float:left;
+    line-height:.85;
+    padding:.04em .12em 0 0;
+    color:var(--clay);
+  }
+
+  .coming{
+    margin-top:3rem;
+    text-align:center;
+    font-style:italic;
+    color:#6e6350;
+  }
+
+  .pagenav{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:.6rem;
+    padding:.55rem .9rem;
+    background:rgba(241,233,214,.96);
+    -webkit-backdrop-filter:blur(6px);
+    backdrop-filter:blur(6px);
+  }
+  .pagenav.top{
+    position:sticky;
+    top:0;
+    z-index:10;
+    border-bottom:1px solid var(--papyrus-dim);
+  }
+  .pagenav.bottom{
+    border-top:1px solid var(--papyrus-dim);
+    margin-top:2rem;
+  }
+  .navarrow{
+    width:2.4rem;height:2.4rem;
+    border-radius:50%;
+    border:1.5px solid var(--clay);
+    background:transparent;
+    color:var(--clay);
+    font-size:1.05rem;
+    line-height:1;
+    cursor:pointer;
+    flex:0 0 auto;
+  }
+  .navarrow:hover{background:var(--clay);color:var(--papyrus)}
+  .navarrow:disabled{opacity:.35;cursor:default}
+  .navarrow:disabled:hover{background:transparent;color:var(--clay)}
+  .chapselect{
+    font-family:'Alegreya Sans', sans-serif;
+    font-size:.92rem;
+    color:var(--ink);
+    background:var(--papyrus);
+    border:1.5px solid var(--clay);
+    border-radius:2rem;
+    padding:.45rem 1rem;
+    max-width:15rem;
+    flex:1 1 auto;
+    -webkit-appearance:none;
+    appearance:none;
+    text-align:center;
+    cursor:pointer;
+  }
+  main section{scroll-margin-top:4.4rem}
+  .book-label.second{margin-top:3.8rem}
+
+  .fabs{
+    position:fixed;
+    right:.8rem;
+    bottom:1.1rem;
+    display:flex;
+    flex-direction:column;
+    gap:.5rem;
+    z-index:20;
+  }
+  .fab{
+    width:2.7rem;height:2.7rem;
+    border-radius:50%;
+    border:1.5px solid var(--clay);
+    background:rgba(241,233,214,.93);
+    color:var(--clay);
+    font-size:1.15rem;
+    line-height:1;
+    cursor:pointer;
+    box-shadow:0 2px 8px rgba(40,34,26,.15);
+  }
+  .fab:hover{background:var(--clay);color:var(--papyrus)}
+
+  footer{
+    background:var(--sea-deep);
+    color:#9aa5ae;
+    text-align:center;
+    padding:2.2rem 1.5rem;
+    font-size:.9rem;
+  }
+  footer .fgreek{color:var(--gold);font-style:italic;margin-bottom:.4rem}
+
+  @media (max-width:520px){
+    main{padding:2.2rem .9rem 3rem}
+    .poem{font-size:1.04rem;line-height:1.75}
+    .verse{display:block;position:relative;padding-right:1.4rem}
+    .verse .ua{padding-left:1.15em;text-indent:-1.15em}
+    .verse .num{position:absolute;right:0;top:.25em}
+    .verse .gr{padding-left:1em;font-size:.9em}
+    .drop::first-letter{font-size:2.6em}
+  }
+
+  .hero-book{padding:3.2rem 1.5rem 3rem}
+  .hero-book h1{font-size:clamp(2.4rem, 8vw, 4rem);letter-spacing:.08em}
+  .crumbs{margin-bottom:.8rem}
+  .crumbs a{color:var(--gold);text-decoration:none;font-family:'Alegreya Sans',sans-serif;font-size:.9rem;letter-spacing:.06em}
+  .booknav{display:flex;justify-content:space-between;gap:1rem;margin-top:3rem;font-family:'Alegreya Sans',sans-serif}
+  .booknav a{text-decoration:none;border:1.5px solid var(--clay);border-radius:2rem;padding:.5rem 1.1rem;color:var(--clay)}
+  .booknav a:hover{background:var(--clay);color:var(--papyrus)}
+  .toc{list-style:none;max-width:44rem;margin:0 auto;padding:2.5rem 1.5rem 3rem}
+  .toc li{margin-bottom:.7rem}
+  .toc a, .toc .soon{
+    display:flex;align-items:baseline;gap:.9rem;
+    padding:1rem 1.2rem;border:1.5px solid var(--papyrus-dim);border-radius:.6rem;
+    text-decoration:none;color:var(--ink);
+  }
+  .toc a:hover{border-color:var(--clay);background:var(--papyrus-dim)}
+  .toc .n{font-family:'Forum',serif;font-size:1.5rem;color:var(--clay);min-width:2.2rem;text-align:right}
+  .toc .t{font-weight:500}
+  .toc .d{color:#6e6350;font-size:.95rem}
+  .toc .soon{opacity:.45}
+  .toc .soon .n{color:#a3947a}
+  .continue-wrap{text-align:center;margin:1.8rem 0 0}
+  .continue-wrap a{
+    display:none;font-family:'Alegreya Sans',sans-serif;
+    border:1.5px solid var(--gold);color:var(--gold);border-radius:2rem;
+    padding:.55rem 1.4rem;text-decoration:none;letter-spacing:.06em;
+  }
+  .continue-wrap a:hover{background:var(--gold);color:var(--sea-deep)}
+</style>
+</head>
+<body>
+
+<header class="hero hero-book">
+  <p class="crumbs"><a href="index.html">‹ Зміст</a></p>
+  <p class="greek-epigraph">ΟΔΥΣΣΕΙΑΣ θ</p>
+  <h1>Пісня восьма</h1>
+  <p class="subtitle">Ігри феаків. Пісні Демодока</p>
+</header>
+
+<nav class="pagenav top" aria-label="Розділи">
+  <button class="navarrow nav-prev" aria-label="Попередній розділ">←</button>
+  <select class="chapselect" aria-label="Перейти до розділу">
+    <option value="rada8">Рада феаків</option>
+    <option value="demodok">Демодок</option>
+    <option value="slozy8">Сльози під плащем</option>
+  </select>
+  <button class="navarrow nav-next" aria-label="Наступний розділ">→</button>
+</nav>
+
+<main id="content">
+  <div class="toggle-wrap">
+    <button class="toggle" id="grToggle" aria-pressed="false">Показати оригінал</button>
+  </div>
+
+  <section id="rada8">
+    <h2>Рада феаків</h2>
+    <p class="lines-range">рядки 1–45</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Щойно з'явилась рання Зоря рожевоперста,</p>
+        <p class="num"></p>
+        <p class="gr">Ἦμος δ᾽ ἠριγένεια φάνη ῥοδοδάκτυλος Ἠώς,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">підвелася з ложа священна сила Алкіноя,</p>
+        <p class="num"></p>
+        <p class="gr">ὤρνυτ᾽ ἄρ᾽ ἐξ εὐνῆς ἱερὸν μένος Ἀλκινόοιο,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">підвівся й паросток Зевсів, городоборець Одіссей.</p>
+        <p class="num"></p>
+        <p class="gr">ἂν δ᾽ ἄρα διογενὴς ὦρτο πτολίπορθος Ὀδυσσεύς.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Повела їх священна сила Алкіноя</p>
+        <p class="num"></p>
+        <p class="gr">τοῖσιν δ᾽ ἡγεμόνευ᾽ ἱερὸν μένος Ἀλκινόοιο</p>
+      </div>
+      <div class="verse">
+        <p class="ua">на майдан феаків, що збудований був при суднах.</p>
+        <p class="num">5</p>
+        <p class="gr">Φαιήκων ἀγορήνδ᾽, ἥ σφιν παρὰ νηυσὶ τέτυκτο.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Прийшовши, посідали вони на каменях тесаних</p>
+        <p class="num"></p>
+        <p class="gr">ἐλθόντες δὲ καθῖζον ἐπὶ ξεστοῖσι λίθοισι</p>
+      </div>
+      <div class="verse">
+        <p class="ua">поруч. А містом ходила Паллада Афіна,</p>
+        <p class="num"></p>
+        <p class="gr">πλησίον· ἡ δ᾽ ἀνὰ ἄστυ μετῴχετο Παλλὰς Ἀθήνη</p>
+      </div>
+      <div class="verse">
+        <p class="ua">окличника подобу прибравши мудрого Алкіноя,</p>
+        <p class="num"></p>
+        <p class="gr">εἰδομένη κήρυκι δαΐφρονος Ἀλκινόοιο,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">повернення великосердому Одіссеєві замишляючи,</p>
+        <p class="num"></p>
+        <p class="gr">νόστον Ὀδυσσῆϊ μεγαλήτορι μητιόωσα,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і, коло кожного мужа стаючи, промовляла слово:</p>
+        <p class="num">10</p>
+        <p class="gr">καί ῥα ἑκάστῳ φωτὶ παρισταμένη φάτο μῦθον·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Нумо сюди, феаків вожді і радники,</p>
+        <p class="num"></p>
+        <p class="gr">«δεῦτ᾽ ἄγε, Φαιήκων ἡγήτορες ἠδὲ μέδοντες,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">на майдан ідіть — про чужинця почути,</p>
+        <p class="num"></p>
+        <p class="gr">εἰς ἀγορὴν ἰέναι, ὄφρα ξείνοιο πύθησθε,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">що недавно прибув у дім мудрого Алкіноя,</p>
+        <p class="num"></p>
+        <p class="gr">ὃς νέον Ἀλκινόοιο δαΐφρονος ἵκετο δῶμα</p>
+      </div>
+      <div class="verse">
+        <p class="ua">морем наблукавшись, — на вигляд до безсмертних подібний».</p>
+        <p class="num"></p>
+        <p class="gr">πόντον ἐπιπλαγχθείς, δέμας ἀθανάτοισιν ὁμοῖος.»</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">Так мовлячи, будила силу й дух у кожного.</p>
+        <p class="num">15</p>
+        <p class="gr">ὣς εἰποῦσ᾽ ὤτρυνε μένος καὶ θυμὸν ἑκάστου.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Швидко наповнились людом майдан і сидіння —</p>
+        <p class="num"></p>
+        <p class="gr">καρπαλίμως δ᾽ ἔμπληντο βροτῶν ἀγοραί τε καὶ ἕδραι</p>
+      </div>
+      <div class="verse">
+        <p class="ua">сходились вони; і багато хто дивувався, побачивши</p>
+        <p class="num"></p>
+        <p class="gr">ἀγρομένων· πολλοὶ δ᾽ ἄρα θηήσαντο ἰδόντες</p>
+      </div>
+      <div class="verse">
+        <p class="ua">мудрого сина Лаерта: Афіна-бо йому</p>
+        <p class="num"></p>
+        <p class="gr">υἱὸν Λαέρταο δαΐφρονα. τῷ δ᾽ ἄρ᾽ Ἀθήνη</p>
+      </div>
+      <div class="verse">
+        <p class="ua">дивну красу вилила на голову й плечі</p>
+        <p class="num"></p>
+        <p class="gr">θεσπεσίην κατέχευε χάριν κεφαλῇ τε καὶ ὤμοις</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і зробила його вищим на вигляд і повнішим,</p>
+        <p class="num">20</p>
+        <p class="gr">καί μιν μακρότερον καὶ πάσσονα θῆκεν ἰδέσθαι,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">щоб усім феакам він любим став,</p>
+        <p class="num"></p>
+        <p class="gr">ὥς κεν Φαιήκεσσι φίλος πάντεσσι γένοιτο</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і грізним, і шани гідним, і щоб звершив змагання</p>
+        <p class="num"></p>
+        <p class="gr">δεινός τ᾽ αἰδοῖός τε καὶ ἐκτελέσειεν ἀέθλους</p>
+      </div>
+      <div class="verse">
+        <p class="ua">численні, якими феаки випробовували Одіссея.</p>
+        <p class="num"></p>
+        <p class="gr">πολλούς, τοὺς Φαίηκες ἐπειρήσαντ᾽ Ὀδυσῆος.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Коли ж зібралися всі і натовп зійшовся,</p>
+        <p class="num"></p>
+        <p class="gr">αὐτὰρ ἐπεί ῥ᾽ ἤγερθεν ὁμηγερέες τ᾽ ἐγένοντο,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Алкіной до слова став і промовив:</p>
+        <p class="num">25</p>
+        <p class="gr">τοῖσιν δ᾽ Ἀλκίνοος ἀγορήσατο καὶ μετέειπε·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Слухайте, феаків вожді і радники,</p>
+        <p class="num"></p>
+        <p class="gr">«κέκλυτε, Φαιήκων ἡγήτορες ἠδὲ μέδοντες,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">щоб я сказав, що в грудях серце велить.</p>
+        <p class="num"></p>
+        <p class="gr">ὄφρ᾽ εἴπω, τά με θυμὸς ἐνὶ στήθεσσι κελεύει.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Чужинець цей — не знаю, хто він — блукаючи, прибув у дім мій,</p>
+        <p class="num"></p>
+        <p class="gr">ξεῖνος ὅδ᾽, οὐκ οἶδ᾽ ὅς τις, ἀλώμενος ἵκετ᾽ ἐμὸν δῶ,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">чи від східних людей, чи від вечірніх;</p>
+        <p class="num"></p>
+        <p class="gr">ἠὲ πρὸς ἠοίων ἦ ἑσπερίων ἀνθρώπων·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">просить він проводу і благає, щоб певним був.</p>
+        <p class="num">30</p>
+        <p class="gr">πομπὴν δ᾽ ὀτρύνει καὶ λίσσεται ἔμπεδον εἶναι.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А ми, як і раніше бувало, спорядімо провід:</p>
+        <p class="num"></p>
+        <p class="gr">ἡμεῖς δ᾽, ὡς τὸ πάρος περ, ἐποτρυνώμεθα πομπήν·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">бо ж ніхто інший, хто в дім мій прийде,</p>
+        <p class="num"></p>
+        <p class="gr">οὐδὲ γὰρ οὐδέ τις ἄλλος, ὅτις κ᾽ ἐμὰ δώμαθ᾽ ἵκηται,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">не сидить тут довго в журбі, проводу чекаючи.</p>
+        <p class="num"></p>
+        <p class="gr">ἐνθάδ᾽ ὀδυρόμενος δηρὸν μένει εἵνεκα πομπῆς.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Тож нумо: судно чорне стягнімо в море священне,</p>
+        <p class="num"></p>
+        <p class="gr">ἀλλ᾽ ἄγε νῆα μέλαιναν ἐρύσσομεν εἰς ἅλα δῖαν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">першоплавне, і хай п'ятдесят два юнаки</p>
+        <p class="num">35</p>
+        <p class="gr">πρωτόπλοον, κούρω δὲ δύω καὶ πεντήκοντα</p>
+      </div>
+      <div class="verse">
+        <p class="ua">оберуться в народі, які й раніше були найкращі.</p>
+        <p class="num"></p>
+        <p class="gr">κρινάσθων κατὰ δῆμον, ὅσοι πάρος εἰσὶν ἄριστοι.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Прив'язавши добре всі при кочетах весла,</p>
+        <p class="num"></p>
+        <p class="gr">δησάμενοι δ᾽ εὖ πάντες ἐπὶ κληῖσιν ἐρετμὰ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">виходьте; а потім швидку учту готуйте,</p>
+        <p class="num"></p>
+        <p class="gr">ἔκβητ᾽· αὐτὰρ ἔπειτα θοὴν ἀλεγύνετε δαῖτα</p>
+      </div>
+      <div class="verse">
+        <p class="ua">в дім мій прийшовши: я всім щедро настачу.</p>
+        <p class="num"></p>
+        <p class="gr">ἡμέτερόνδ᾽ ἐλθόντες· ἐγὼ δ᾽ ἐῢ πᾶσι παρέξω.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Це юнакам я наказую. А ви, інші</p>
+        <p class="num">40</p>
+        <p class="gr">κούροισιν μὲν ταῦτ᾽ ἐπιτέλλομαι· αὐτὰρ οἱ ἄλλοι</p>
+      </div>
+      <div class="verse">
+        <p class="ua">скіпетроносні царі, до дому мого гарного</p>
+        <p class="num"></p>
+        <p class="gr">σκηπτοῦχοι βασιλῆες ἐμὰ πρὸς δώματα καλὰ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">приходьте — гостя в покоях пригостити:</p>
+        <p class="num"></p>
+        <p class="gr">ἔρχεσθ᾽, ὄφρα ξεῖνον ἐνὶ μεγάροισι φιλέωμεν·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і хай ніхто не відмовляється. Покличте й божистого співця,</p>
+        <p class="num"></p>
+        <p class="gr">μηδέ τις ἀρνείσθω. καλέσασθε δὲ θεῖον ἀοιδόν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Демодока: йому-бо бог понад усіх дав пісню —</p>
+        <p class="num"></p>
+        <p class="gr">Δημόδοκον· τῷ γάρ ῥα θεὸς περὶ δῶκεν ἀοιδὴν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">тішити, хоч би про що серце його заспівати веліло».</p>
+        <p class="num">45</p>
+        <p class="gr">τέρπειν, ὅππῃ θυμὸς ἐποτρύνῃσιν ἀείδειν.»</p>
+      </div>
+    </div>
+  </section>
+  <section id="demodok">
+    <h2>Демодок</h2>
+    <p class="lines-range">рядки 46–82</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Так промовивши, повів він, і за ним рушили</p>
+        <p class="num"></p>
+        <p class="gr">ὣς ἄρα φωνήσας ἡγήσατο, τοὶ δ᾽ ἅμ᾽ ἕποντο</p>
+      </div>
+      <div class="verse">
+        <p class="ua">скіпетроносці; окличник же пішов по божистого співця.</p>
+        <p class="num"></p>
+        <p class="gr">σκηπτοῦχοι· κῆρυξ δὲ μετῴχετο θεῖον ἀοιδόν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">А обрані юнаки — п'ятдесят два —</p>
+        <p class="num"></p>
+        <p class="gr">κούρω δὲ κρινθέντε δύω καὶ πεντήκοντα</p>
+      </div>
+      <div class="verse">
+        <p class="ua">рушили, як він звелів, на берег моря пустинного.</p>
+        <p class="num"></p>
+        <p class="gr">βήτην, ὡς ἐκέλευσ᾽, ἐπὶ θῖν᾽ ἁλὸς ἀτρυγέτοιο.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Коли ж зійшли вони до судна і моря,</p>
+        <p class="num">50</p>
+        <p class="gr">αὐτὰρ ἐπεί ῥ᾽ ἐπὶ νῆα κατήλυθον ἠδὲ θάλασσαν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">судно чорне стягнули на глибінь,</p>
+        <p class="num"></p>
+        <p class="gr">νῆα μὲν οἵ γε μέλαιναν ἁλὸς βένθοσδε ἔρυσσαν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">поставили щоглу й вітрила на судні чорнім,</p>
+        <p class="num"></p>
+        <p class="gr">ἐν δ᾽ ἱστόν τ᾽ ἐτίθεντο καὶ ἱστία νηῒ μελαίνῃ,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">весла в кочети вклали ремінні,</p>
+        <p class="num"></p>
+        <p class="gr">ἠρτύναντο δ᾽ ἐρετμὰ τροποῖσ᾽ ἐν δερματίνοισι</p>
+      </div>
+      <div class="verse">
+        <p class="ua">все як годиться, і білі вітрила напнули,</p>
+        <p class="num"></p>
+        <p class="gr">πάντα κατὰ μοῖραν· παρὰ δ᾽ ἱστία λευκὰ τάνυσσαν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і високо на воді судно поставили. А потім</p>
+        <p class="num">55</p>
+        <p class="gr">ὑψοῦ δ᾽ ἐν νοτίῳ τήν γ᾽ ὥρμισαν· αὐτὰρ ἔπειτα</p>
+      </div>
+      <div class="verse">
+        <p class="ua">рушили до великого дому мудрого Алкіноя.</p>
+        <p class="num"></p>
+        <p class="gr">βάν ῥ᾽ ἴμεν Ἀλκινόοιο δαΐφρονος ἐς μέγα δῶμα.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Наповнились передсінки, і двори, й покої людьми,</p>
+        <p class="num"></p>
+        <p class="gr">πλῆντο δ᾽ ἄρ᾽ αἴθουσαί τε καὶ ἕρκεα καὶ δόμοι ἀνδρῶν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">що сходились: багато їх було, молодих і старих.</p>
+        <p class="num"></p>
+        <p class="gr">ἀγρομένων· πολλοὶ δ᾽ ἄρ᾽ ἔσαν, νέοι ἠδὲ παλαιοί.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Для них Алкіной дванадцять овець заколов,</p>
+        <p class="num"></p>
+        <p class="gr">τοῖσιν δ᾽ Ἀλκίνοος δυοκαίδεκα μῆλ᾽ ἱέρευσεν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">вісім свиней білоіклих і двох волів повільних:</p>
+        <p class="num">60</p>
+        <p class="gr">ὀκτὼ δ᾽ ἀργιόδοντας ὕας, δύο δ᾽ εἰλίποδας βοῦς·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">їх білували, поралися й учту любу готували.</p>
+        <p class="num"></p>
+        <p class="gr">τοὺς δέρον ἀμφί θ᾽ ἕπον, τετύκοντό τε δαῖτ᾽ ἐρατεινήν.</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">Окличник же близько підійшов, ведучи співця вірного:</p>
+        <p class="num"></p>
+        <p class="gr">κῆρυξ δ᾽ ἐγγύθεν ἦλθεν ἄγων ἐρίηρον ἀοιδόν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">його Муза над усе полюбила і дала йому добро і лихо:</p>
+        <p class="num"></p>
+        <p class="gr">τὸν περὶ Μοῦσ᾽ ἐφίλησε, δίδου δ᾽ ἀγαθόν τε κακόν τε·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">очей позбавила — і дала солодку пісню.</p>
+        <p class="num"></p>
+        <p class="gr">ὀφθαλμῶν μὲν ἄμερσε, δίδου δ᾽ ἡδεῖαν ἀοιδήν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Понтоной поставив йому трон срібноцвяхований</p>
+        <p class="num">65</p>
+        <p class="gr">τῷ δ᾽ ἄρα Ποντόνοος θῆκε θρόνον ἀργυρόηλον</p>
+      </div>
+      <div class="verse">
+        <p class="ua">посеред бенкетників, до колони високої притуливши,</p>
+        <p class="num"></p>
+        <p class="gr">μέσσῳ δαιτυμόνων, πρὸς κίονα μακρὸν ἐρείσας·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і повісив на кілок формінгу дзвінку</p>
+        <p class="num"></p>
+        <p class="gr">κὰδ δ᾽ ἐκ πασσαλόφι κρέμασεν φόρμιγγα λίγειαν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">над його головою, і показав, як рукою сягнути, —</p>
+        <p class="num"></p>
+        <p class="gr">αὐτοῦ ὑπὲρ κεφαλῆς καὶ ἐπέφραδε χερσὶν ἑλέσθαι</p>
+      </div>
+      <div class="verse">
+        <p class="ua">окличник; поруч поставив кошик і стіл гарний,</p>
+        <p class="num"></p>
+        <p class="gr">κῆρυξ· πὰρ δ᾽ ἐτίθει κάνεον καλήν τε τράπεζαν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і келих вина — пити, коли душа забажає.</p>
+        <p class="num">70</p>
+        <p class="gr">πὰρ δὲ δέπας οἴνοιο, πιεῖν ὅτε θυμὸς ἀνώγοι.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">І до готових страв вони руки простягли.</p>
+        <p class="num"></p>
+        <p class="gr">οἱ δ᾽ ἐπ᾽ ὀνείαθ᾽ ἑτοῖμα προκείμενα χεῖρας ἴαλλον.</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">А як жагу до пиття і їжі вдовольнили,</p>
+        <p class="num"></p>
+        <p class="gr">αὐτὰρ ἐπεὶ πόσιος καὶ ἐδητύος ἐξ ἔρον ἕντο,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Муза співця надихнула співати славу мужів —</p>
+        <p class="num"></p>
+        <p class="gr">Μοῦσ᾽ ἄρ᾽ ἀοιδὸν ἀνῆκεν ἀειδέμεναι κλέα ἀνδρῶν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">з пісні, що слава її сягала тоді неба широкого:</p>
+        <p class="num"></p>
+        <p class="gr">οἴμης, τῆς τότ᾽ ἄρα κλέος οὐρανὸν εὐρὺν ἵκανε,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">зваду Одіссея і Пеліда Ахілла,</p>
+        <p class="num">75</p>
+        <p class="gr">νεῖκος Ὀδυσσῆος καὶ Πηλεΐδεω Ἀχιλῆος,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">як вони посварились колись на щедрій учті богів</p>
+        <p class="num"></p>
+        <p class="gr">ὥς ποτε δηρίσαντο θεῶν ἐν δαιτὶ θαλείῃ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">словами страшними — і владар мужів Агамемнон</p>
+        <p class="num"></p>
+        <p class="gr">ἐκπάγλοισ᾽ ἐπέεσσιν, ἄναξ δ᾽ ἀνδρῶν Ἀγαμέμνων</p>
+      </div>
+      <div class="verse">
+        <p class="ua">радів у душі, що сваряться найкращі з ахейців:</p>
+        <p class="num"></p>
+        <p class="gr">χαῖρε νόῳ, ὅ τ᾽ ἄριστοι Ἀχαιῶν δηριόωντο.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">так-бо йому провістив Феб Аполлон</p>
+        <p class="num"></p>
+        <p class="gr">ὣς γάρ οἱ χρείων μυθήσατο Φοῖβος Ἀπόλλων</p>
+      </div>
+      <div class="verse">
+        <p class="ua">у Піфоні священнім, коли переступив він поріг кам'яний,</p>
+        <p class="num">80</p>
+        <p class="gr">Πυθοῖ ἐν ἠγαθέῃ, ὅθ᾽ ὑπέρβη λάϊνον οὐδὸν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">питаючи бога. Тоді-бо покотився початок біди</p>
+        <p class="num"></p>
+        <p class="gr">χρησόμενος. τότε γάρ ῥα κυλίνδετο πήματος ἀρχὴ</p>
+      </div>
+      <div class="verse">
+        <p class="ua">на троянців і данайців з волі великого Зевса.</p>
+        <p class="num"></p>
+        <p class="gr">Τρωσί τε καὶ Δαναοῖσι Διὸς μεγάλου διὰ βουλάς.</p>
+      </div>
+    </div>
+  </section>
+  <section id="slozy8">
+    <h2>Сльози під плащем</h2>
+    <p class="lines-range">рядки 83–103</p>
+    <div class="poem">
+      <div class="verse">
+        <p class="ua drop">Це співав співець преславний. А Одіссей,</p>
+        <p class="num"></p>
+        <p class="gr">ταῦτ᾽ ἄρ᾽ ἀοιδὸς ἄειδε περικλυτός· αὐτὰρ Ὀδυσσεὺς</p>
+      </div>
+      <div class="verse">
+        <p class="ua">плащ пурпуровий великий руками міцними вхопивши,</p>
+        <p class="num"></p>
+        <p class="gr">πορφύρεον μέγα φᾶρος ἑλὼν χερσὶ στιβαρῇσι</p>
+      </div>
+      <div class="verse">
+        <p class="ua">на голову натягнув і прекрасне лице заховав:</p>
+        <p class="num">85</p>
+        <p class="gr">κὰκ κεφαλῆς εἴρυσσε, κάλυψε δὲ καλὰ πρόσωπα·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">соромився-бо феаків, з-під брів сльози ронячи.</p>
+        <p class="num"></p>
+        <p class="gr">αἴδετο γὰρ Φαίηκας ὑπ᾽ ὀφρύσι δάκρυα λείβων.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">І щоразу, як замовкав, співаючи, божистий співець,</p>
+        <p class="num"></p>
+        <p class="gr">ἦ τοι ὅτε λήξειεν ἀείδων θεῖος ἀοιδός,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">він, сльози утерши, плащ із голови стягав</p>
+        <p class="num"></p>
+        <p class="gr">δάκρυ᾽ ὀμορξάμενος κεφαλῆς ἄπο φᾶρος ἕλεσκε</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і, келих дводонний узявши, богам узливав;</p>
+        <p class="num"></p>
+        <p class="gr">καὶ δέπας ἀμφικύπελλον ἑλὼν σπείσασκε θεοῖσιν·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">коли ж той знову починав, і співати спонукали</p>
+        <p class="num">90</p>
+        <p class="gr">αὐτὰρ ὅτ᾽ ἂψ ἄρχοιτο καὶ ὀτρύνειαν ἀείδειν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">найкращі з феаків, словами його втішаючись, —</p>
+        <p class="num"></p>
+        <p class="gr">Φαιήκων οἱ ἄριστοι, ἐπεὶ τέρποντ᾽ ἐπέεσσιν,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">знову Одіссей, голову вкривши, ридав.</p>
+        <p class="num"></p>
+        <p class="gr">ἂψ Ὀδυσεὺς κατὰ κρᾶτα καλυψάμενος γοάασκεν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Від усіх інших він приховав, що сльози ллє,</p>
+        <p class="num"></p>
+        <p class="gr">ἔνθ᾽ ἄλλους μὲν πάντας ἐλάνθανε δάκρυα λείβων,</p>
+      </div>
+      <div class="verse">
+        <p class="ua">лише Алкіной це постеріг і помітив,</p>
+        <p class="num"></p>
+        <p class="gr">Ἀλκίνοος δέ μιν οἶος ἐπεφράσατ᾽ ἠδ᾽ ἐνόησεν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">сидячи поруч, — і тяжке зітхання його почув.</p>
+        <p class="num">95</p>
+        <p class="gr">ἥμενος ἄγχ᾽ αὐτοῦ, βαρὺ δὲ στενάχοντος ἄκουσεν.</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Одразу він промовив до феаків веслолюбних:</p>
+        <p class="num"></p>
+        <p class="gr">αἶψα δὲ Φαιήκεσσι φιληρέτμοισι μετηύδα·</p>
+      </div>
+      <div class="stanza-break"></div>
+      <div class="verse">
+        <p class="ua">«Слухайте, феаків вожді і радники!</p>
+        <p class="num"></p>
+        <p class="gr">«κέκλυτε, Φαιήκων ἡγήτορες ἠδὲ μέδοντες·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Уже наситили ми серце учтою рівною</p>
+        <p class="num"></p>
+        <p class="gr">ἤδη μὲν δαιτὸς κεκορήμεθα θυμὸν ἐΐσης</p>
+      </div>
+      <div class="verse">
+        <p class="ua">і формінгою, що щедрій учті подруга.</p>
+        <p class="num"></p>
+        <p class="gr">φόρμιγγός θ᾽, ἣ δαιτὶ συνήορός ἐστι θαλείῃ·</p>
+      </div>
+      <div class="verse">
+        <p class="ua">Тепер же вийдімо і змагань спробуймо</p>
+        <p class="num">100</p>
+        <p class="gr">νῦν δ᾽ ἐξέλθωμεν καὶ ἀέθλων πειρηθῶμεν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">всіляких, щоб чужинець розповів своїм рідним,</p>
+        <p class="num"></p>
+        <p class="gr">πάντων, ὥς χ᾽ ὁ ξεῖνος ἐνίσπῃ οἷσι φίλοισιν</p>
+      </div>
+      <div class="verse">
+        <p class="ua">додому вернувшись, наскільки ми над інших кращі</p>
+        <p class="num"></p>
+        <p class="gr">οἴκαδε νοστήσας, ὅσσον περιγινόμεθ᾽ ἄλλων</p>
+      </div>
+      <div class="verse">
+        <p class="ua">в кулачнім бою, боротьбі, стрибках і бігові».</p>
+        <p class="num"></p>
+        <p class="gr">πύξ τε παλαιμοσύνῃ τε καὶ ἅλμασιν ἠδὲ πόδεσσιν.»</p>
+      </div>
+    </div>
+  </section>
+
+  <p class="coming">Пісня перекладається. Далі — ігри: біг, боротьба, диск; образа Евріала і відповідь Одіссея (рядки 104–233).</p>
+
+  <nav class="booknav" aria-label="Пісні">
+    <a href="pisnia-7.html">← Пісня VII</a>
+    <a href="index.html">Зміст</a>
+    <span></span>
+  </nav>
+</main>
+
+<nav class="pagenav bottom" aria-label="Розділи (внизу)">
+  <button class="navarrow nav-prev" aria-label="Попередній розділ">←</button>
+  <select class="chapselect" aria-label="Перейти до розділу">
+    <option value="rada8">Рада феаків</option>
+    <option value="demodok">Демодок</option>
+    <option value="slozy8">Сльози під плащем</option>
+  </select>
+  <button class="navarrow nav-next" aria-label="Наступний розділ">→</button>
+</nav>
+
+<div class="fabs">
+  <button class="fab" id="fabUp" aria-label="Догори">↑</button>
+  <button class="fab" id="fabDown" aria-label="Додолу">↓</button>
+</div>
+
+<div style="padding:2.5rem 0;background:var(--papyrus)"><div class="meander" role="presentation"></div></div>
+
+<footer>
+  <p class="fgreek">οἶνοψ πόντος — винно-темне море</p>
+  <p>Переклад з давньогрецької: Hardex, 2026.</p>
+  <p>Оригінальний текст Гомера — у суспільному надбанні.</p>
+</footer>
+
+<script>
+  const btn = document.getElementById('grToggle');
+  const content = document.getElementById('content');
+  const POS_KEY = 'odysseia-pos-p8';
+  const GR_KEY = 'odysseia-greek';
+
+  try { localStorage.setItem('odysseia-last', location.pathname.split('/').pop() || 'index.html'); } catch(e){}
+
+  function setGreek(on){
+    content.classList.toggle('show-greek', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.textContent = on ? 'Сховати оригінал' : 'Показати оригінал';
+  }
+  btn.addEventListener('click', () => {
+    const on = !content.classList.contains('show-greek');
+    setGreek(on);
+    try { localStorage.setItem(GR_KEY, on ? '1' : '0'); } catch(e){}
+  });
+
+  document.getElementById('fabUp').addEventListener('click', () =>
+    window.scrollTo({top:0, behavior:'smooth'}));
+  document.getElementById('fabDown').addEventListener('click', () =>
+    window.scrollTo({top:document.documentElement.scrollHeight, behavior:'smooth'}));
+
+  const sections = Array.from(document.querySelectorAll('main section'));
+  const selects = Array.from(document.querySelectorAll('.chapselect'));
+  const prevBtns = Array.from(document.querySelectorAll('.nav-prev'));
+  const nextBtns = Array.from(document.querySelectorAll('.nav-next'));
+
+  function currentIndex(){
+    const mark = window.scrollY + window.innerHeight * 0.3;
+    let idx = 0;
+    sections.forEach((s, i) => { if (s.offsetTop <= mark) idx = i; });
+    return idx;
+  }
+  function goTo(i){
+    if (i < 0 || i >= sections.length) return;
+    sections[i].scrollIntoView({behavior:'smooth'});
+  }
+  function syncNav(){
+    const i = currentIndex();
+    selects.forEach(s => s.value = sections[i].id);
+    prevBtns.forEach(b => b.disabled = (i === 0));
+    nextBtns.forEach(b => b.disabled = (i === sections.length - 1));
+  }
+  prevBtns.forEach(b => b.addEventListener('click', () => goTo(currentIndex() - 1)));
+  nextBtns.forEach(b => b.addEventListener('click', () => goTo(currentIndex() + 1)));
+  selects.forEach(s => s.addEventListener('change', () => {
+    const el = document.getElementById(s.value);
+    if (el) el.scrollIntoView({behavior:'smooth'});
+  }));
+
+  window.addEventListener('load', () => {
+    try {
+      if (localStorage.getItem(GR_KEY) === '1') setGreek(true);
+      const pos = localStorage.getItem(POS_KEY);
+      if (pos) window.scrollTo(0, parseInt(pos, 10) || 0);
+    } catch(e){}
+    syncNav();
+  });
+
+  let saveTimer;
+  window.addEventListener('scroll', () => {
+    syncNav();
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      try { localStorage.setItem(POS_KEY, String(window.scrollY)); } catch(e){}
+    }, 200);
+  }, {passive:true});
+</script>
+
+</body>
+</html>
